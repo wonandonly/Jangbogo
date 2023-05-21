@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity2 extends AppCompatActivity {
@@ -15,6 +16,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private EditText nameEditText;
     private Button okBtn;
+    private ImageButton micBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class MainActivity2 extends AppCompatActivity {
     private void initData() {
         //nameEditText = findViewById(R.id.nameEditText);
         okBtn = findViewById(R.id.Button1);
+        micBtn=findViewById(R.id.imageButton2);
     }
 
     private void addEventListener() {
@@ -38,6 +41,12 @@ public class MainActivity2 extends AppCompatActivity {
 //            2. 화면 전환 로직 (인텐트)
             //String name = nameEditText.getText().toString();
             Intent intent = new Intent(this, MainActivity3.class);
+            //intent.putExtra(KEY_NAME, name);
+            startActivity(intent);
+        });
+        micBtn.setOnClickListener(view -> {
+            // 이벤트 핸들러 로직 작성
+            Intent intent = new Intent(this, MainActivity4.class);
             //intent.putExtra(KEY_NAME, name);
             startActivity(intent);
         });
