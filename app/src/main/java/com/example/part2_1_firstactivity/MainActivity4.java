@@ -21,6 +21,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,11 +62,20 @@ public class MainActivity4 extends AppCompatActivity {
 
     List<Message> messageList;
     MessageAdapter messageAdapter;
+    private FirebaseFirestore secondaryFirestore;
+    private FirebaseFirestore db;
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-*";
+
+    FirebaseOptions options = new FirebaseOptions.Builder()
+            .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
+            .setProjectId("jangbogo-app")
+            .setDatabaseUrl("https://jangbogo-app.firebaseio.com")
+            .build();
+
 
 
     @Override
@@ -75,6 +88,10 @@ public class MainActivity4 extends AppCompatActivity {
         recycler_view = findViewById(R.id.recycler_view);
         tv_welcome = findViewById(R.id.tv_welcome);
         et_msg = findViewById(R.id.et_msg);
+
+        FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
+        secondaryFirestore = FirebaseFirestore.getInstance(FirebaseApp.getInstance("secondary"));
+        db= FirebaseFirestore.getInstance();
 
 
         recycler_view.setHasFixedSize(true);
