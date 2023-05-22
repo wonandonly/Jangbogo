@@ -61,7 +61,7 @@ public class MainActivity4 extends AppCompatActivity {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "sk-****************************";
+    private static final String MY_SECRET_KEY = "sk-*";
 
 
     @Override
@@ -210,7 +210,12 @@ public class MainActivity4 extends AppCompatActivity {
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             for (int i = 0; i < matches.size(); i++) {
-                textView.setText(matches.get(i));
+                String question = matches.get(i);
+                addToChat(question, Message.SENT_BY_ME);
+                et_msg.setText("");
+                callAPI(question);
+                tv_welcome.setVisibility(View.GONE);
+                //textView.setText(matches.get(i));
             }
         }
 
