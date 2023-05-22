@@ -8,7 +8,9 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.View;
+
 import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +61,7 @@ public class MainActivity4 extends AppCompatActivity {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "sk-**************************";
+    private static final String MY_SECRET_KEY = "sk-*";
 
 
     @Override
@@ -116,12 +118,16 @@ public class MainActivity4 extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
 
         // 버튼을 클릭 이벤트 - 객체에 Context와 listener를 할당한 후 실행
-        sttBtn.setOnClickListener(v -> {
-            mRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
-            mRecognizer.setRecognitionListener(listener);
-            mRecognizer.startListening(intent);
-        });
 
+        sttBtn.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          mRecognizer = SpeechRecognizer.createSpeechRecognizer(MainActivity4.this);
+                                          mRecognizer.setRecognitionListener(listener);
+                                          mRecognizer.startListening(intent);
+                                      }
+                                  }
+                );
     }
 
     void addToChat(String message, String sentBy) {
@@ -204,7 +210,12 @@ public class MainActivity4 extends AppCompatActivity {
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             for (int i = 0; i < matches.size(); i++) {
-                textView.setText(matches.get(i));
+                String question = matches.get(i);
+                addToChat(question, Message.SENT_BY_ME);
+                et_msg.setText("");
+                callAPI(question);
+                tv_welcome.setVisibility(View.GONE);
+                //textView.setText(matches.get(i));
             }
         }
 
