@@ -61,7 +61,7 @@ public class MainActivity4 extends AppCompatActivity {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-****************************";
 
 
     @Override
