@@ -3,12 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.18703703703703703" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/drawable/button.xml" value="0.1" />
+        <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/drawable/ic_send.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/drawable/imgbtn_states.xml" value="0.34375" />
+        <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/drawable/rounded_corner.xml" value="0.18703703703703703" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/activity_main.xml" value="0.18568840579710144" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/activity_main2.xml" value="0.1" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/activity_main3.xml" value="0.10144927536231885" />
-        <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/activity_main4.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/activity_main4.xml" value="0.16" />
+        <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/chat_item.xml" value="0.18568840579710144" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/fragment_first.xml" value="0.5494791666666666" />
       </map>
