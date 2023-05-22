@@ -40,6 +40,11 @@ public class MainActivity2 extends AppCompatActivity {
 //            1. 현재 nameEditText 뷰 컴포넌트에 값을 가져온다. (방어적 코드)
 //            2. 화면 전환 로직 (인텐트)
             //String name = nameEditText.getText().toString();
+
+            /////////////////////////////////////////////////////////////////////
+            ////////////////////아이디 비번 서버로 보내서 맞는지 확인(아이디 값 가져와 저장)
+            //////////////////////////////////////////////////////////
+
             Intent intent = new Intent(this, MainActivity3.class);
             //intent.putExtra(KEY_NAME, name);
             startActivity(intent);
