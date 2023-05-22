@@ -48,6 +48,7 @@ public class MainActivity4 extends AppCompatActivity {
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
     TextView textView;
+    String question;
     final int PERMISSION = 1;
 
     RecyclerView recycler_view;
@@ -61,7 +62,7 @@ public class MainActivity4 extends AppCompatActivity {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "sk-*";
+    private static final String MY_SECRET_KEY = "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";
 
 
     @Override
@@ -137,6 +138,9 @@ public class MainActivity4 extends AppCompatActivity {
                 messageList.add(new Message(message, sentBy));
                 messageAdapter.notifyDataSetChanged();
                 recycler_view.smoothScrollToPosition(messageAdapter.getItemCount());
+                ///////////////////////////////////
+                /////////////////////speechLog////////////////
+                //////////////////////////////////
             }
         });
     }
@@ -210,13 +214,14 @@ public class MainActivity4 extends AppCompatActivity {
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             for (int i = 0; i < matches.size(); i++) {
-                String question = matches.get(i);
-                addToChat(question, Message.SENT_BY_ME);
-                et_msg.setText("");
-                callAPI(question);
-                tv_welcome.setVisibility(View.GONE);
+                question += matches.get(i);
+
                 //textView.setText(matches.get(i));
             }
+            addToChat(question, Message.SENT_BY_ME);
+            et_msg.setText("");
+            callAPI(question);
+            tv_welcome.setVisibility(View.GONE);
         }
 
         @Override
