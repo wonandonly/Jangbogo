@@ -3,76 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity4">
 
-    <TextView
-        android:id="@+id/text_id1"
-        android:layout_width="293dp"
-        android:layout_height="459dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="203dp"
-        android:layout_marginLeft="73dp"
-        android:text="재료\n건미역 10그램\n물 2컵\n다진마늘 1작은술\n국간장 1큰술\n참기름 1작은술\n소금 약간\n후추 약간\n대파 1/4대\n김치(선택) 약간"
-        android:textColor="#ffffff"
-        android:textSize="15sp" />-->
 
-    <!--<ImageView
-            android:id="@+id/imageView1"
-                    android:layout_width="300dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="70dp"
-                    android:src="@drawable/chat_2" />
-
-    <TextView
-            android:id="@+id/text_id2"
-                    android:layout_width="293dp"
-                    android:layout_height="459dp"
-                    android:layout_marginTop="90dp"
-                    android:layout_alignParentRight="true"
-                    android:text="장보고, 미역국 1인분 재료 검색해줘"
-                    android:textColor="#ffffff"
-                    android:textSize="15sp" />-->
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginLeft="8dp"
-        android:src="@drawable/profile" />
-
-    <ImageButton
-        android:id="@+id/imageBtn"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="157dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/imgbtn_states"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:layout_above="@+id/bottom_layout"/>
+
 
     <TextView
-        android:id="@+id/contentsTextView1"
-        android:layout_width="190dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/chat_2"
-        android:text="음성인식 결과가 여기에 표시됩니다."
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="90dp"/>
+        android:id="@+id/tv_welcome"
+        android:layout_centerInParent="true"
+        android:text="Welcome"
+        android:gravity="center"
+        android:textSize="28sp"
+        />
 
-    <EditText
-        android:id="@+id/contentsTextView"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/chat_1"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="내용"
-        android:inputType="textMultiLine"
-        android:lines="1"
-        android:maxLines="100"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="150dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp"
+        android:id="@+id/bottom_layout">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_msg"
+            android:layout_centerInParent="true"
+            android:hint="Write here"
+            android:padding="16dp"
+            android:layout_toLeftOf="@+id/btn_send"
+            android:background="@drawable/rounded_corner"/>
+
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/btn_send"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_send"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+
+        <ImageButton
+            android:id="@+id/imageBtn"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/imgbtn_states"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
