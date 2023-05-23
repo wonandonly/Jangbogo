@@ -80,6 +80,9 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             .setDatabaseUrl("https://jangbogo-app.firebaseio.com")
             .build();
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +94,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         tv_welcome = findViewById(R.id.tv_welcome);
         et_msg = findViewById(R.id.et_msg);
 
-        FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
+        //jangbogo어플 서버 초기화
+        //FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
         secondaryFirestore = FirebaseFirestore.getInstance(FirebaseApp.getInstance("secondary"));
         db= FirebaseFirestore.getInstance();
 
