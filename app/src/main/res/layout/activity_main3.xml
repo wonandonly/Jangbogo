@@ -16,7 +16,7 @@
         android:layout_marginTop="25dp"
         android:textStyle="bold"
         android:textSize ="35dp"
-        android:text="아이디와 \n비밀번호를 입력하세요.\n" />
+        android:text="쇼핑시 필요한 아이디와 \n비밀번호를 입력하세요.\n" />
 
     <TextView
         android:id="@+id/textView1"
