@@ -8,9 +8,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.View;
-
 import android.widget.EditText;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import adapter.MessageAdapter;
 import model.Message;
@@ -61,7 +61,7 @@ public class MainActivity4 extends AppCompatActivity {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "sk-*";
+    private static final String MY_SECRET_KEY = "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";
 
 
     @Override
@@ -233,6 +233,27 @@ public class MainActivity4 extends AppCompatActivity {
         addToChat(response, Message.SENT_BY_BOT);
     }
 
+    private static List<String> extractIngredients(String recipe) {
+        List<String> ingredients = new ArrayList<>();
+        Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
+
+        int startIdx = recipe.indexOf("재료:");
+        int endIdx = recipe.indexOf("조리 절차:");
+        if (startIdx == -1 || endIdx == -1 || startIdx >= endIdx) {
+            return ingredients; // 재료 또는 조리 절차 텍스트가 없는 경우 빈 목록 반환
+        }
+        String ingredientText = recipe.substring(startIdx + 4, endIdx); // "재료:" 다음 문자부터 추출
+
+        Matcher matcher = pattern.matcher(ingredientText);
+        while (matcher.find()) {
+            String ingredient = matcher.group(1) + ": " + matcher.group(2);
+            ingredients.add(ingredient);
+        }
+        return ingredients;
+    }
+
+
+
     void callAPI(String question) {
         //okhttp
         messageList.add(new Message("...", Message.SENT_BY_BOT));
@@ -292,6 +313,7 @@ public class MainActivity4 extends AppCompatActivity {
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         //아래 result 받아오는 경로가 좀 수정되었다.
                         String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
+                        List<String> ingredients = extractIngredients(result);
                         addResponse(result.trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
