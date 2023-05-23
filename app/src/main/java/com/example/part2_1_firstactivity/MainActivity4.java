@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.EditText;
@@ -32,6 +34,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import adapter.MessageAdapter;
@@ -46,13 +49,13 @@ import okhttp3.Response;
 
 //import android.telecom.Call;
 
-public class MainActivity4 extends AppCompatActivity {
+public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     Intent intent;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
     TextView textView;
-    String question;
+    String resultStr;
     final int PERMISSION = 1;
 
     RecyclerView recycler_view;
@@ -64,6 +67,7 @@ public class MainActivity4 extends AppCompatActivity {
     MessageAdapter messageAdapter;
     private FirebaseFirestore secondaryFirestore;
     private FirebaseFirestore db;
+    TextToSpeech tts;
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
@@ -75,8 +79,6 @@ public class MainActivity4 extends AppCompatActivity {
             .setProjectId("jangbogo-app")
             .setDatabaseUrl("https://jangbogo-app.firebaseio.com")
             .build();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,8 @@ public class MainActivity4 extends AppCompatActivity {
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList);
         recycler_view.setAdapter(messageAdapter);
+
+
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +138,9 @@ public class MainActivity4 extends AppCompatActivity {
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
+
+        //tts 객체 생성, 초기화
+        tts = new TextToSpeech(MainActivity4.this, (TextToSpeech.OnInitListener) this);
 
         // 버튼을 클릭 이벤트 - 객체에 Context와 listener를 할당한 후 실행
 
@@ -231,14 +238,18 @@ public class MainActivity4 extends AppCompatActivity {
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             for (int i = 0; i < matches.size(); i++) {
-                question += matches.get(i);
+                resultStr += matches.get(i);
+                addToChat(resultStr, Message.SENT_BY_ME);
+                et_msg.setText("");
+                callAPI(resultStr);
+                tv_welcome.setVisibility(View.GONE);
 
                 //textView.setText(matches.get(i));
             }
-            addToChat(question, Message.SENT_BY_ME);
-            et_msg.setText("");
-            callAPI(question);
-            tv_welcome.setVisibility(View.GONE);
+
+            if(resultStr.length() < 1) return;
+            resultStr = resultStr.replace(" ", "");
+            moveActivity(resultStr);
         }
 
         @Override
@@ -324,4 +335,30 @@ public class MainActivity4 extends AppCompatActivity {
             }
         });
     }
+    public void moveActivity(String resultStr) {
+        if(resultStr.indexOf("액티비티 투") > -1) {
+            String guideStr = "액티비티를 넘어갑니다.";
+            Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
+            funcVoiceOut(guideStr);
+
+            //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
+            startActivity(intent);
+        }
+    }
+    public void funcVoiceOut(String OutMsg){
+        if(OutMsg.length()<1)return;
+        if(!tts.isSpeaking()) {
+            tts.speak(OutMsg, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            tts.setLanguage(Locale.KOREAN);
+            tts.setPitch(1);
+        } else {
+            Log.e("TTS", "초기화 실패");
+        }
+    }
+
 }
