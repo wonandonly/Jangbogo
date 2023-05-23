@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "374943218129",
+    "firebase_url": "https://jangbogo-app-default-rtdb.firebaseio.com",
+    "project_id": "jangbogo-app",
+    "storage_bucket": "jangbogo-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374943218129:android:87622e9ac90f089fdc88f0",
+        "android_client_info": {
+          "package_name": "com.ips.jangbogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374943218129-3plm369plitglb2oqhlpregg5tq988t1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD3oggTcLVkkW5WgkOqdWy3fGWg1oDRyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374943218129-3plm369plitglb2oqhlpregg5tq988t1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

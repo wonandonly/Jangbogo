@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "34391646342",
+    "firebase_url": "https://jangbogo-shop-default-rtdb.firebaseio.com",
+    "project_id": "jangbogo-shop",
+    "storage_bucket": "jangbogo-shop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34391646342:android:94b07ffabdc2ebb11c7107",
+        "android_client_info": {
+          "package_name": "com.example.part2_1_firstactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34391646342-8q4c2j4ugn80jgd6f3sdb2j8ogiec71v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCqMT_wlmUguwL5X2wy72rl62N2b2xDv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34391646342-8q4c2j4ugn80jgd6f3sdb2j8ogiec71v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34391646342:android:89fafb2ad360c7371c7107",
+        "android_client_info": {
+          "package_name": "com.ips.jangbogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34391646342-8q4c2j4ugn80jgd6f3sdb2j8ogiec71v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCqMT_wlmUguwL5X2wy72rl62N2b2xDv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34391646342-8q4c2j4ugn80jgd6f3sdb2j8ogiec71v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34391646342:android:8fa6ccf5ca2984af1c7107",
+        "android_client_info": {
+          "package_name": "com.ips.jangbogo_shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34391646342-8q4c2j4ugn80jgd6f3sdb2j8ogiec71v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCqMT_wlmUguwL5X2wy72rl62N2b2xDv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34391646342-8q4c2j4ugn80jgd6f3sdb2j8ogiec71v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
