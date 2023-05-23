@@ -72,7 +72,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-***";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
