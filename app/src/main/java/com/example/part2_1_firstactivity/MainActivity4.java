@@ -72,13 +72,16 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-*";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
             .setProjectId("jangbogo-app")
             .setDatabaseUrl("https://jangbogo-app.firebaseio.com")
             .build();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         tv_welcome = findViewById(R.id.tv_welcome);
         et_msg = findViewById(R.id.et_msg);
 
-        FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
+        //jangbogo어플 서버 초기화
+        //FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
         secondaryFirestore = FirebaseFirestore.getInstance(FirebaseApp.getInstance("secondary"));
         db= FirebaseFirestore.getInstance();
 
@@ -152,7 +156,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                           mRecognizer.startListening(intent);
                                       }
                                   }
-                );
+        );
     }
 
     void addToChat(String message, String sentBy) {
@@ -265,8 +269,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         messageList.remove(messageList.size()-1);
         addToChat(response, Message.SENT_BY_BOT);
     }
-
-    private static List<String> extractIngredients(String recipe) {
+    private static List<String> extractIngredients(String recipe) { //AI가 응답한 요리재료 추출
         List<String> ingredients = new ArrayList<>();
         Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
 
@@ -283,6 +286,17 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             ingredients.add(ingredient);
         }
         return ingredients;
+    }
+
+    private static String extractCookingProcedure(String recipe) { //AI가 응답한 레시피 추출
+        Pattern pattern = Pattern.compile("조리 절차:\\s+([\\s\\S]+)");
+        Matcher matcher = pattern.matcher(recipe);
+
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        }
+
+        return ""; // If cooking procedure not found
     }
 
 
@@ -337,7 +351,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 addResponse("Failed to load response due to " + e.getMessage());
             }
 
-            @Override
+            @Override //AI가 답변하는 부분-> 답변한 내용이 result에 저장되며, addResponse로 화면 말풍선에 표시됨. 
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     JSONObject jsonObject = null;
@@ -346,8 +360,14 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         //아래 result 받아오는 경로가 좀 수정되었다.
                         String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
-                        List<String> ingredients = extractIngredients(result);
                         addResponse(result.trim());
+                        
+                        //AI의 답변에서 재료만 추출해서 ingredients에 저장, 요리법 추출해서 cookingProcedure에 저장 => 백이 받으면 됨.
+                        List<String> ingredients = extractIngredients(result); //이부분 확인부탁..
+                        String cookingProcedure = extractCookingProcedure(result); //이부분 확인부탁..
+//                        System.out.println("Cooking Procedure:");
+//                        System.out.println(cookingProcedure);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -359,7 +379,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     }
     public void moveActivity(String resultStr) {
         if(resultStr.indexOf("재료") > -1) {
-            String guideStr = "액티비티를 넘어갑니다.";
+            String guideStr = "액티비티를 넘어갑니다."; //이부분 수정필요
             Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
             funcVoiceOut(guideStr);
 
@@ -367,7 +387,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             //startActivity(intent);
         }
         if(resultStr.indexOf("레시피") > -1) {
-            String guideStr = "액티비티를 넘어갑니다.";
+            String guideStr = "액티비티를 넘어갑니다."; //수정필요
             Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
             funcVoiceOut(guideStr);
 
