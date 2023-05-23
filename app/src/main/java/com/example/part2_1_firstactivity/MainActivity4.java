@@ -336,13 +336,29 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         });
     }
     public void moveActivity(String resultStr) {
-        if(resultStr.indexOf("액티비티 투") > -1) {
+        if(resultStr.indexOf("재료") > -1) {
             String guideStr = "액티비티를 넘어갑니다.";
             Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
             funcVoiceOut(guideStr);
 
             //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
             startActivity(intent);
+        }
+        if(resultStr.indexOf("레시피") > -1) {
+            String guideStr = "액티비티를 넘어갑니다.";
+            Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
+            funcVoiceOut(guideStr);
+
+            //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
+            startActivity(intent);
+            if(resultStr.indexOf("카메라") > -1) {
+                String guideSt = "사진을 찍겠습니다..";
+                Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
+                funcVoiceOut(guideStr);
+
+                //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
+                startActivity(intent);
+            }
         }
     }
     public void funcVoiceOut(String OutMsg){
