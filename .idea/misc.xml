@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -11,6 +10,7 @@
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/activity_main4.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/Users/SM-PC/AndroidStudioProjects/Part21FirstActivity2/app/src/main/res/layout/fragment_first.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/SM-PC/Downloads/2023ips/Jangbogo-app/app/src/main/res/layout/activity_camera.xml" value="0.1" />
         <entry key="..\:/Users/SM-PC/Downloads/2023ips/Jangbogo-app/app/src/main/res/layout/activity_main.xml" value="0.2234375" />
         <entry key="..\:/Users/SM-PC/Downloads/2023ips/Jangbogo-app/app/src/main/res/layout/activity_main2.xml" value="0.2234375" />
         <entry key="..\:/Users/SM-PC/Downloads/2023ips/Jangbogo-app/app/src/main/res/layout/activity_main3.xml" value="0.1" />
@@ -22,5 +22,5 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK" />
 </project>

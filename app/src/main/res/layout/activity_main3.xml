@@ -16,7 +16,7 @@
         android:layout_marginTop="25dp"
         android:textStyle="bold"
         android:textSize ="35dp"
-        android:text="아이디와 \n비밀번호를 입력하세요.\n" />
+        android:text="쇼핑시 필요한 아이디와 \n비밀번호를 입력하세요.\n" />
 
     <TextView
         android:id="@+id/textView1"
@@ -32,14 +32,14 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editText1"
+        android:layout_below="@id/edit_id"
         android:textStyle="bold"
         android:textSize = "25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="25dp"
         android:text="비밀번호" />
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/edit_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -51,7 +51,7 @@
         android:textSize = "25dp"
         android:hint="아이디 입력" />
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/edit_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -63,10 +63,10 @@
         android:textSize = "25dp"
         android:width="950dp" />
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editText2"
+        android:layout_below="@id/edit_pw"
         android:gravity="center"
         android:text="로그인"
         android:width="400dp"
