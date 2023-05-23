@@ -97,7 +97,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         //jangbogo어플 서버 초기화
         //FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
         secondaryFirestore = FirebaseFirestore.getInstance(FirebaseApp.getInstance("secondary"));
-        db= FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
 
         recycler_view.setHasFixedSize(true);
@@ -108,7 +108,6 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList);
         recycler_view.setAdapter(messageAdapter);
-
 
 
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -129,19 +128,19 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 .build();
 
         // 퍼미션 체크
-        if ( Build.VERSION.SDK_INT >= 23 ){
+        if (Build.VERSION.SDK_INT >= 23) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
-                    Manifest.permission.RECORD_AUDIO},PERMISSION);
+                    Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
         // xml의 버튼과 텍스트 뷰 연결
-        textView = (TextView)findViewById(R.id.tv_welcome);
-        sttBtn = (ImageButton)findViewById(R.id.imageBtn);
+        textView = (TextView) findViewById(R.id.tv_welcome);
+        sttBtn = (ImageButton) findViewById(R.id.imageBtn);
 
         // RecognizerIntent 객체 생성
-        intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
+        intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
         //tts 객체 생성, 초기화
         tts = new TextToSpeech(MainActivity4.this, (TextToSpeech.OnInitListener) this);
@@ -156,7 +155,19 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                           mRecognizer.startListening(intent);
                                       }
                                   }
-                );
+        );
+
+        //음성녹음 버튼 누르면 사라지도록하는 코드
+        tv_welcome = findViewById(R.id.tv_welcome);
+
+        ImageButton buttonInvisible = (ImageButton) findViewById(R.id.imageBtn);
+
+        buttonInvisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_welcome.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     void addToChat(String message, String sentBy) {
