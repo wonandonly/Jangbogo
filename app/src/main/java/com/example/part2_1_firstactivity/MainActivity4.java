@@ -238,7 +238,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             for (int i = 0; i < matches.size(); i++) {
-                resultStr += matches.get(i);
+                resultStr = matches.get(i);
                 addToChat(resultStr, Message.SENT_BY_ME);
                 et_msg.setText("");
                 callAPI(resultStr);
