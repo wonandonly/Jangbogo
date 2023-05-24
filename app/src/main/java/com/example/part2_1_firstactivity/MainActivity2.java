@@ -69,6 +69,91 @@ public class MainActivity2 extends AppCompatActivity {
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
 
+            // 주문!
+            db.collection("cart")
+                    .whereEqualTo("userId", jId)
+                    .whereEqualTo("productType", true)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            List list = new ArrayList();
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Map map = document.getData();
+                                    map.put("key", document.getId());
+                                    list.add(map);
+                                }
+                                long totalPrice = 0;
+                                Log.d(TAG, "list size : " + list.size());
+                                for (int i = 0; i < list.size(); i++){
+                                    Map tmp = (Map) list.get(i);
+                                    Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("productName") + ", " + tmp.get("productPrice"));
+                                    totalPrice += (long)tmp.get("productPrice");
+                                    // 이건 업데이트 cart 비우기
+                                    /*db.collection("cart").document("BLEuHZyMKTlpoAKPA1EM")
+                                            .update("productType", false)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error updating document", e);
+                                                }
+                                            });*/
+
+                                    // 이건 삭제 cart 비우기
+                                    // 장바구니 업데이트 (지금은 삭제)
+                                    /*db.collection("cities").document("DC")
+                                            .delete()
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error deleting document", e);
+                                                }
+                                            });*/
+                                }
+                                Log.d(TAG, "list totalPrice : " + totalPrice);
+                                Map tmp = (Map) list.get(0);
+                                String str = tmp.get("productName") + "외 " + (list.size() - 1) + "건";
+                                Log.d(TAG, "list product : " + str);
+                                //Log.d(TAG, );
+                                /*Map<String, Object> credit = new HashMap<>();
+                                    credit.put("usreId", jId);
+                                    credit.put("datetime", FieldValue.serverTimestamp());
+                                    credit.put("totalPrice", totalPrice);
+                                    credit.put("product", "리스트로? 합쳐서??");
+
+
+                                    db.collection("credit")
+                                            .add(credit)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error adding document", e);
+                                                }
+                                            });*/
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
             /*// 상품 검색
             Task<QuerySnapshot> task = db.collection("product").where(Filter.or(
                     Filter.equalTo("search", "미역 30g"),
@@ -100,6 +185,7 @@ public class MainActivity2 extends AppCompatActivity {
                                     Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
                                     // addToChat(question, Message.SENT_BY_BOT);
                                 }
+
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
@@ -109,7 +195,6 @@ public class MainActivity2 extends AppCompatActivity {
             /*// 상품 추가
             Map<String, Object> product = new HashMap<>();
             product.put("search", "녹말물 2큰술 (녹말 1큰술 + 물 2큰술)");
-            //product.put("type", "");
             product.put("name", "[노브랜드] 감자맛전분99.9");
             product.put("size", "350g");
             product.put("price", 2580);
@@ -159,6 +244,7 @@ public class MainActivity2 extends AppCompatActivity {
             /*// 장바구니 리스트
             Task<QuerySnapshot> task = db.collection("cart")
                     .whereEqualTo("userId", jId)
+                    //.whereEqualTo("productType", true)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -186,9 +272,11 @@ public class MainActivity2 extends AppCompatActivity {
             Map<String, Object> cart = new HashMap<>();
             cart.put("userId", jId);
             cart.put("datetime", FieldValue.serverTimestamp());
-            cart.put("productId", "7SVb5NDWCOCZksbPPlrv6");
-            cart.put("productName", "풀무원 맛있는 간장");
-            cart.put("productCount", 1);
+            cart.put("productId", tmp.get("key"));
+            cart.put("productName", tmp.get("name"));
+            cart.put("productPrice", tmp.get("price"));
+            cart.put("productSize", tmp.get("size"));
+            cart.put("productType", true);
 
             db.collection("cart")
                     .add(cart)
