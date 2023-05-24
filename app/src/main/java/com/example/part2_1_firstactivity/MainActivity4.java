@@ -59,6 +59,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
+
+
 //import android.telecom.Call;
 
 public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnInitListener {
@@ -75,6 +78,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     TextView textView;
     String resultStr;
     String resultStr2;
+    String foodName;
     final int PERMISSION = 1;
 
     RecyclerView recycler_view;
@@ -94,7 +98,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "*";
+    private static final String MY_SECRET_KEY = "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";
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -203,7 +207,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 recipe.put("datetime", FieldValue.serverTimestamp());
                 recipe.put("ingredient", ingredients);
                 recipe.put("jId", jId);
-                recipe.put("name", "후식");
+                recipe.put("name", foodName);
                 recipe.put("recipe", cookingProcedure);
 
                 secondaryFirestore.collection("recipe")
@@ -220,7 +224,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                 Log.w(TAG, "Error adding document", e);
                             }
                         });
-
+                Toast.makeText(getApplicationContext(), "레시피가 저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -351,7 +355,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                 }else {
                                     for (int i = 0; i < list.size(); i++) {
                                         Map tmp = (Map) list.get(i);
-                                        recipeSearchStr += tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe") + "\n";
+                                        recipeSearchStr += tmp.get("name") + " 레시피\n" + tmp.get("recipe") + "\n";
                                         Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe"));
 
                                     }
@@ -464,6 +468,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
+            String[] words = matches.get(0).split(" ");  // 문장을 공백으로 분리하여 단어 배열 생성
+            if (words.length > 0) {
+                foodName =  words[0];  // 첫 번째 단어 반환
+            }
             for (int i = 0; i < matches.size(); i++) {
                 resultStr = matches.get(i);
                 addToChat(resultStr, Message.SENT_BY_ME);
@@ -525,14 +533,6 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 callAPI(resultStr);
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
-            }
-            if(resultStr.indexOf("카메라") > -1) {
-                String guideSt = "사진을 찍겠습니다.";
-                Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
-                funcVoiceOut(guideSt);
-
-                Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
-                startActivity(Cameraintent);
             }
 
 
@@ -734,8 +734,5 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 //            startActivity(intent);
 //        });
 //    }
-
-
-
 
 }
