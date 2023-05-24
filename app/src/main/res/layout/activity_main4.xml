@@ -72,4 +72,15 @@
         android:padding="16dp"
         android:visibility="invisible"/>
 
+    <ImageButton
+        android:id="@+id/shop_btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="17dp"
+        android:background="#00ff0000"
+        android:src="@drawable/shop_btn"
+        android:layout_alignParentEnd="true"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
 </RelativeLayout>
