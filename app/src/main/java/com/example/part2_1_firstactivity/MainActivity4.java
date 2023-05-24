@@ -8,11 +8,9 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.View;
-
-import android.widget.EditText;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -83,7 +80,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private String cookingProcedure;
     private List<String> ingredients;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "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";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
