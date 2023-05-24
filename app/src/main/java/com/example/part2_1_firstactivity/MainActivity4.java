@@ -77,7 +77,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "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";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
@@ -329,10 +329,41 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 .post(body)
                 .build();
 
+
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 addResponse("Failed to load response due to " + e.getMessage());
+            }
+            List<String> extractIngredients(String recipe) {
+                List<String> ingredients = new ArrayList<>();
+                Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
+
+                int startIdx = recipe.indexOf("재료:");
+                int endIdx = recipe.indexOf("만드는 방법:");
+                if (startIdx == -1 || endIdx == -1 || startIdx >= endIdx) {
+                    return ingredients; // 재료 또는 조리 절차 텍스트가 없는 경우 빈 목록 반환
+                }
+                String ingredientText = recipe.substring(startIdx + 4, endIdx); // "재료:" 다음 문자부터 추출
+
+                Matcher matcher1 = pattern.matcher(ingredientText);
+                while (matcher1.find()) {
+                    String ingredient = matcher1.group(1) + ": " + matcher1.group(2);
+                    ingredients.add(ingredient);
+                }
+                return ingredients;
+            }
+
+            String extractCookingProcedure(String recipe) {
+                Pattern pattern2 = Pattern.compile("만드는 방법:\\s+([\\s\\S]+)");
+                Matcher matcher2 = pattern2.matcher(recipe);
+
+                if (matcher2.find()) {
+                    return matcher2.group(1).trim();
+                }
+
+                return ""; // If cooking procedure not found
             }
 
             @Override
@@ -344,18 +375,19 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         if (jsonArray.length() > 0) {
                             String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
-
-                            List<String> ingredients = extractIngredients(result);
                             addResponse(result.trim());
+                            List<String> ingredients = extractIngredients(result);
+
                             // Add ingredients to chat
                             for (String ingredient : ingredients) {
                                 addResponse(ingredient);
                             }
 
                             if (!ingredients.isEmpty()) {
-                                Log.d(TAG, ingredients.get(0));
+                                //Log.d(TAG, ingredients.get(0));
                                 String cookingProcedure = extractCookingProcedure(result);
-                                Log.d(TAG, cookingProcedure);
+                                //Log.d(TAG, cookingProcedure);
+                                addResponse(cookingProcedure);
                             } else {
                                 addResponse("No ingredients found in the recipe.");
                             }
@@ -372,35 +404,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
         });
     }
-    private static List<String> extractIngredients(String recipe) {
-        List<String> ingredients = new ArrayList<>();
-        Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
 
-        int startIdx = recipe.indexOf("재료:");
-        int endIdx = recipe.indexOf("만드는 방법:");
-        if (startIdx == -1 || endIdx == -1 || startIdx >= endIdx) {
-            return ingredients; // 재료 또는 조리 절차 텍스트가 없는 경우 빈 목록 반환
-        }
-        String ingredientText = recipe.substring(startIdx + 4, endIdx); // "재료:" 다음 문자부터 추출
-
-        Matcher matcher1 = pattern.matcher(ingredientText);
-        while (matcher1.find()) {
-            String ingredient = matcher1.group(1) + ": " + matcher1.group(2);
-            ingredients.add(ingredient);
-        }
-        return ingredients;
-    }
-
-    private static String extractCookingProcedure(String recipe) {
-        Pattern pattern2 = Pattern.compile("만드는 방법:\\s+([\\s\\S]+)");
-        Matcher matcher2 = pattern2.matcher(recipe);
-
-        if (matcher2.find()) {
-            return matcher2.group(1).trim();
-        }
-
-        return ""; // If cooking procedure not found
-    }
 
     public void moveActivity(String resultStr) {
 
