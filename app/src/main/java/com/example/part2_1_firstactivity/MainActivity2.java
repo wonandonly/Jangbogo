@@ -1,24 +1,36 @@
 package com.example.part2_1_firstactivity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +44,7 @@ public class MainActivity2 extends AppCompatActivity {
     private ImageButton startBtn;
     private FirebaseFirestore secondaryFirestore;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
@@ -59,11 +72,52 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void shopLogin(){
         String jId = "t9S9FGgV7ygPMNAtX8Oj";
+        mAuth = FirebaseAuth.getInstance();
 
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
 
-            // 주문!
+            Task<QuerySnapshot> task = secondaryFirestore.collection("user")
+            .whereEqualTo("jId", jId)
+            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    List list = new ArrayList();
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map map = document.getData();
+                            map.put("key", document.getId());
+                            list.add(map);
+                            Log.d(TAG, "wifi" + map.get("shopId"));
+                            // 쇼핑몰 로그인 하기!!
+
+                            /*String id = "test@gmail.com";
+                            String pw = "admin123";
+                            //map.get("shopId") + "", map.get("shopPw") + ""
+
+                            mAuth.signInWithEmailAndPassword(id, pw)
+                                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "signInWithEmail:success");
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                //startActivity(intent);
+                                            } else {
+                                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                                Toast.makeText(MainActivity2.this, "다시 시도해 주세요.",Toast.LENGTH_SHORT).show();
+                                            }
+                                            // logout = FirebaseAuth.getInstance().signOut();
+                                        }
+                                    });*/
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+
+            /*// 주문!
             db.collection("cart")
                     .whereEqualTo("userId", jId)
                     .whereEqualTo("productType", true)
@@ -83,70 +137,73 @@ public class MainActivity2 extends AppCompatActivity {
                                     Map tmp = (Map) list.get(i);
                                     Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("productName") + ", " + tmp.get("productPrice"));
                                     totalPrice += (long)tmp.get("productPrice");
+
                                     // 이건 업데이트 cart 비우기
-                                    /*db.collection("cart").document("BLEuHZyMKTlpoAKPA1EM")
-                                            .update("productType", false)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error updating document", e);
-                                                }
-                                            });*/
+//                                    db.collection("cart").document("BLEuHZyMKTlpoAKPA1EM")
+//                                            .update("productType", false)
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Log.w(TAG, "Error updating document", e);
+//                                                }
+//                                            });
 
                                     // 이건 삭제 cart 비우기
                                     // 장바구니 업데이트 (지금은 삭제)
-                                    /*db.collection("cities").document("DC")
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error deleting document", e);
-                                                }
-                                            });*/
+//                                    db.collection("cities").document("DC")
+//                                            .delete()
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        Log.w(TAG, "Error deleting document", e);
+//                                    }
+//                                });
                                 }
                                 Log.d(TAG, "list totalPrice : " + totalPrice);
                                 Map tmp = (Map) list.get(0);
                                 String str = tmp.get("productName") + "외 " + (list.size() - 1) + "건";
                                 Log.d(TAG, "list product : " + str);
                                 //Log.d(TAG, );
-                                /*Map<String, Object> credit = new HashMap<>();
-                                    credit.put("usreId", jId);
-                                    credit.put("datetime", FieldValue.serverTimestamp());
-                                    credit.put("totalPrice", totalPrice);
-                                    credit.put("product", "리스트로? 합쳐서??");
-
-
-                                    db.collection("credit")
-                                            .add(credit)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error adding document", e);
-                                                }
-                                            });*/
+                                // 결제에 내용 넣기
+//                                Map<String, Object> credit = new HashMap<>();
+//                                    credit.put("usreId", jId);
+//                                    credit.put("datetime", FieldValue.serverTimestamp());
+//                                    credit.put("totalPrice", totalPrice);
+//                                    credit.put("product", "리스트로? 합쳐서??");
+//
+//
+//                                    db.collection("credit")
+//                                            .add(credit)
+//                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                                @Override
+//                                                public void onSuccess(DocumentReference documentReference) {
+//                                                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Log.w(TAG, "Error adding document", e);
+//                                                }
+//                                            });
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
                         }
-                    });
+                    });*/
+
 
             /*// 상품 검색
             Task<QuerySnapshot> task = db.collection("product").where(Filter.or(
@@ -178,6 +235,32 @@ public class MainActivity2 extends AppCompatActivity {
                                     Map tmp = (Map) list.get(i);
                                     Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
                                     // addToChat(question, Message.SENT_BY_BOT);
+
+                                    // 장바구니에 추가
+                                    Map<String, Object> cart = new HashMap<>();
+                                    cart.put("userId", jId);
+                                    cart.put("datetime", FieldValue.serverTimestamp());
+                                    cart.put("productCount", 1);
+                                    cart.put("productId", tmp.get("key"));
+                                    cart.put("productName", tmp.get("name"));
+                                    cart.put("productPrice", tmp.get("price"));
+                                    cart.put("productSize", tmp.get("size"));
+                                    cart.put("productType", true);
+
+                                    db.collection("cart")
+                                            .add(cart)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error adding document", e);
+                                                }
+                                            });
                                 }
 
                             } else {
@@ -266,6 +349,7 @@ public class MainActivity2 extends AppCompatActivity {
             Map<String, Object> cart = new HashMap<>();
             cart.put("userId", jId);
             cart.put("datetime", FieldValue.serverTimestamp());
+            cart.put("productCount", 1);
             cart.put("productId", tmp.get("key"));
             cart.put("productName", tmp.get("name"));
             cart.put("productPrice", tmp.get("price"));
@@ -359,26 +443,6 @@ public class MainActivity2 extends AppCompatActivity {
                             }
                         }
                     });*/
-
-            /*Task<QuerySnapshot> task = secondaryFirestore.collection("user")
-            .whereEqualTo("jId", jId)
-            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    List list = new ArrayList();
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Map map = document.getData();
-                            map.put("key", document.getId());
-                            list.add(map);
-                            Log.d(TAG, "wifi" + map.get("shopId"));
-                            // 쇼핑몰 로그인 하기!!
-                        }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                }
-            });*/
         }
     }
 
