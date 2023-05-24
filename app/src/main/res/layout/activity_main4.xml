@@ -11,56 +11,65 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_view"
-        android:layout_above="@+id/bottom_layout"/>
+        android:layout_above="@+id/bottom_layout"
+        android:layout_marginBottom="158dp"/>
 
 
     <TextView
+        android:id="@+id/tv_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_welcome"
         android:layout_centerInParent="true"
-        android:text="Welcome"
         android:gravity="center"
-        android:textSize="28sp"
-        />
+        android:text="'{요리이름} 레시피 알려줘'\n라고 말해보세요."
+        android:textSize="28sp" />
+
+    <ImageButton
+        android:id="@+id/imageBtn"
+        android:layout_width="match_parent"
+        android:layout_height="158dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/imgbtn_states"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <RelativeLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:padding="8dp"
-        android:id="@+id/bottom_layout">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/et_msg"
-            android:layout_centerInParent="true"
-            android:hint="Write here"
-            android:padding="16dp"
-            android:layout_toLeftOf="@+id/btn_send"
-            android:background="@drawable/rounded_corner"/>
+        android:layout_marginBottom="40dp"
+        android:padding="8dp">
 
         <ImageButton
+            android:id="@+id/btn_send"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:id="@+id/btn_send"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
             android:src="@drawable/ic_send"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            />
+            android:visibility="invisible" />
 
-        <ImageButton
-            android:id="@+id/imageBtn"
-            android:layout_width="match_parent"
-            android:layout_height="157dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/imgbtn_states"
-            tools:ignore="SpeakableTextPresentCheck" />
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imageBtn"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="157dp"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:background="@drawable/imgbtn_states"-->
+        <!--            tools:ignore="SpeakableTextPresentCheck" />-->
 
     </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="-24dp"
+        android:background="@drawable/rounded_corner"
+        android:hint="Write here"
+        android:padding="16dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
