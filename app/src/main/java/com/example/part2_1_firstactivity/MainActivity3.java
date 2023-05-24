@@ -56,11 +56,11 @@ public class MainActivity3 extends AppCompatActivity {
             }
 
             //Log.d(TAG, edit_id.getText() + ", " + edit_pw.getText());
-            //String id = String.valueOf(edit_id.getText());
-            //String pw = String.valueOf(edit_pw.getText());
+            String id = String.valueOf(edit_id.getText());
+            String pw = String.valueOf(edit_pw.getText());
 
-            String id = "test@gmail.com";
-            String pw = "admin123";
+            //String id = "test@gmail.com";
+            //String pw = "admin123";
             Intent intent = new Intent(this, MainActivity4.class);
             //startActivity(intent);
 
