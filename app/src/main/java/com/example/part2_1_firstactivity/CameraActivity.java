@@ -22,10 +22,15 @@ public class CameraActivity extends AppCompatActivity{
     ImageView imageView;
     Intent intent;
     TextToSpeech tts;
+    private Button homeBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        initData();
+        addEventListener();
 
         imageView = findViewById(R.id.CameraimageView);
 
@@ -52,5 +57,14 @@ public class CameraActivity extends AppCompatActivity{
             }
     );
 
+    private void initData() {
+        homeBtn = findViewById(R.id.homeBtn);
+    }
+    private void addEventListener() {
+        homeBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, MainActivity4.class);
+            startActivity(intent);
+        });
+    }
 
 }

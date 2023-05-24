@@ -8,11 +8,12 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
         android:id="@+id/recycler_view"
-        android:layout_above="@+id/bottom_layout"/>
+        android:layout_width="match_parent"
+
+        android:layout_height="479dp"
+        android:layout_above="@+id/bottom_layout"
+        android:layout_marginBottom="-5dp" />
 
 
     <TextView
@@ -86,5 +87,16 @@
         android:hint="Write here"
         android:padding="16dp"
         android:visibility="invisible"/>
+
+    <ImageButton
+        android:id="@+id/shop_btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="17dp"
+        android:background="#00ff0000"
+        android:src="@drawable/shop_btn"
+        android:layout_alignParentEnd="true"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 
 </RelativeLayout>

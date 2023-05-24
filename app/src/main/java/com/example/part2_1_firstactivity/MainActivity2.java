@@ -1,29 +1,16 @@
 package com.example.part2_1_firstactivity;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -56,6 +43,7 @@ public class MainActivity2 extends AppCompatActivity {
         secondaryFirestore = FirebaseFirestore.getInstance(FirebaseApp.getInstance("secondary"));
         db= FirebaseFirestore.getInstance();    // shop
 
+        // 로그인 코드 필요
         shopLogin();
     }
 
@@ -64,11 +52,34 @@ public class MainActivity2 extends AppCompatActivity {
 
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
-            Log.d(TAG, "wifi");
 
-            Task<QuerySnapshot> task = secondaryFirestore.collection("user")
-            .whereEqualTo("jId", jId)
-            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            /*// 레시피 추가
+            Map<String, Object> recipe = new HashMap<>();
+            recipe.put("datetime", FieldValue.serverTimestamp());
+            recipe.put("ingredient", "재료, 수량\\ 재료,수량\\");
+            recipe.put("jId", jId);
+            recipe.put("name", "후식233");
+            recipe.put("recipe", "testtest");
+
+            secondaryFirestore.collection("recipe")
+                    .add(recipe)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });*/
+
+            /*// 레시피 리스트
+            Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
+                    .whereEqualTo("jId", jId)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             List list = new ArrayList();
@@ -77,14 +88,41 @@ public class MainActivity2 extends AppCompatActivity {
                                     Map map = document.getData();
                                     map.put("key", document.getId());
                                     list.add(map);
-                                    Log.d(TAG, "wifi" + map.get("shopId"));
-                                    // 쇼핑몰 로그인 하기!!
+                                    //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                }
+                                Log.d(TAG, "list size : " + list.size());
+                                for (int i = 0; i < list.size(); i++){
+                                    Map tmp = (Map) list.get(i);
+                                    Log.d(TAG, "list : " + tmp.get("name"));
+                                    // 함수 넣으면 됨! -
+                                    // addToChat(question, Message.SENT_BY_BOT);
                                 }
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
                         }
-                    });
+                    });*/
+
+            /*//로그인 확인
+            Task<QuerySnapshot> task = secondaryFirestore.collection("user")
+            .whereEqualTo("jId", jId)
+            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    List list = new ArrayList();
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map map = document.getData();
+                            map.put("key", document.getId());
+                            list.add(map);
+                            Log.d(TAG, "wifi" + map.get("shopId"));
+                            // 쇼핑몰 로그인 하기!!
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });*/
         }
     }
 

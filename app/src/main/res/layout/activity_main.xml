@@ -40,9 +40,9 @@
 <!--        android:src="@drawable/image2886"/>-->
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/logopage"/>
+        android:src="@drawable/logopage" />
 
 </LinearLayout>
