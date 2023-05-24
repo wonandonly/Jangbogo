@@ -67,14 +67,8 @@ public class CustomChoiceListViewAdapter extends BaseAdapter {
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
     //public void addItem(Drawable icon, String text) {
-    public void addItem(ArrayList<String> ingredients) {
-        for (String ingredient : ingredients) {
-            ListViewItem item = new ListViewItem();
+    public void addItem(ArrayList<ListViewItem> items) {
+        listViewItemList.addAll(items);
 
-            //item.setIcon(icon);
-            item.setText(ingredient);
-
-            listViewItemList.add(item);
-        }
     }
 }

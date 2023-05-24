@@ -61,21 +61,21 @@
         <!--            android:layout_alignParentBottom="true"-->
         <!--            android:background="@drawable/imgbtn_states"-->
         <!--            tools:ignore="SpeakableTextPresentCheck" />-->
-        <Button
-            android:id="@+id/goto_list_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="주문 계속하기" />
+            <Button
+                android:id="@+id/goto_list_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginLeft="40dp"
+                android:text="주문 계속하기" />
 
-        <Button
-            android:id="@+id/save_recipe_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginLeft="160dp"
-            android:text="레시피 저장하기" />
-
+            <Button
+                android:id="@+id/save_recipe_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginLeft="180dp"
+                android:text="레시피 저장하기" />
     </RelativeLayout>
 
 

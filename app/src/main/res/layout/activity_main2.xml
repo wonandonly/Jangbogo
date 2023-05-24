@@ -10,20 +10,19 @@
         android:id="@+id/imageButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/startbtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="500dp"
+        android:background="@drawable/startbtn"
         tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/Button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/loginbtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="380dp"
         android:background="#00ff0000"
-        />
+        android:drawableRight="@drawable/loginbtn" />
 
     <ImageView
         android:id="@+id/imageView"

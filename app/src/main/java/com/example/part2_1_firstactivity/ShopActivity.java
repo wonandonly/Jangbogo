@@ -5,14 +5,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.util.Log;
 import android.util.SparseBooleanArray;
-=======
-
-import android.util.SparseBooleanArray;
-import android.util.Log;
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -54,58 +48,62 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
         Intent intent2 = getIntent();
 
-        adapter = new CustomChoiceListViewAdapter() ;
+        adapter = new CustomChoiceListViewAdapter();
         listview = (ListView) findViewById(R.id.listview1);
         listview.setAdapter(adapter);
-        ArrayList<String> ReceiveArr = intent2.getStringArrayListExtra("ArrayList"); //***
-        adapter.addItem(ReceiveArr);
+//        ArrayList<String> ReceiveArr = intent2.getStringArrayListExtra("ArrayList"); //***
+//        adapter.addItem(ReceiveArr);
+        ArrayList<String> ReceiveArr = intent2.getStringArrayListExtra("ArrayList");
+        ArrayList<ListViewItem> itemList = new ArrayList<>();
+
+        for (String ingredient : ReceiveArr) {
+            ListViewItem item = new ListViewItem();
+            item.setText(ingredient);
+            itemList.add(item);
+        }
+
+        adapter.addItem(itemList);
 
 
 //        SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
         //checkedItems.get(0); <checked면 0, not checked면 1을 반환
         //int count = adapter.getCount() ;
 
-        SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
-        ArrayList<String> selectedItems = new ArrayList<>();
 
-        for (int i = 0; i < checkedItems.size(); i++) {
-            int position = checkedItems.keyAt(i);
-            if (checkedItems.valueAt(i)) {
-                //String item =  adapter.getItem(position);
-                String item = (String) adapter.getItem(position);
-                selectedItems.add(item);
-            }
-        }
-
-        db= FirebaseFirestore.getInstance();    // shop
-<<<<<<< HEAD
-
-=======
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
+        db = FirebaseFirestore.getInstance();    // shop
 
         Button moveButton = findViewById(R.id.backBtn);
         moveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<ListViewItem> selectedItems = new ArrayList<>();
+                SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
+
+                for (int i = 0; i < checkedItems.size(); i++) {
+                    int position = checkedItems.keyAt(i);
+                    if (checkedItems.valueAt(i)) {
+                        //String item =  adapter.getItem(position);
+                        ListViewItem item = (ListViewItem) adapter.getItem(position);
+                        selectedItems.add(item);
+
+                    }
+                }
+                ArrayList<String> selectedStrings = new ArrayList<>();
+                for (ListViewItem item : selectedItems) {
+                    selectedStrings.add(item.getText());
+                    Log.d(TAG, "Selected item: " + item);
+                }
+
                 //OrderActivity로 넘어감
-                //Intent intent = new Intent (getApplicationContext(), OrderActivity.class);
-                //intent.putStringArrayListExtra("SelectedItems", selectedItems);
+                Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                intent.putStringArrayListExtra("SelectedItems", selectedStrings);
                 ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
-                Intent intent=new Intent (getApplicationContext(), OrderActivity.class);
                 startActivity(intent);
 
 //                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
-<<<<<<< HEAD
-                ///startActivity(intent);
-=======
                 //startActivity(intent);
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
 
             }
         });
@@ -115,14 +113,9 @@ public class ShopActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
 
     }
+
     private void addEventListener() {
         backBtn.setOnClickListener(view -> {
-<<<<<<< HEAD
-
-            Intent intent = new Intent(this, OrderActivity.class);
-
-=======
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
             String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
             int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
@@ -153,7 +146,7 @@ public class ShopActivity extends AppCompatActivity {
                                 //Log.d(TAG, list.size() + "list map : " + map.get("name"));
                             }
                             //Log.d(TAG, "list size : " + list.size());
-                            for (int i = 0; i < list.size(); i++){
+                            for (int i = 0; i < list.size(); i++) {
                                 Map tmp = (Map) list.get(i);
                                 Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
 
@@ -190,15 +183,9 @@ public class ShopActivity extends AppCompatActivity {
                 });
             }
 
-<<<<<<< HEAD
-//            Intent intent = new Intent(this, MainActivity4.class);
-
-=======
             Intent intent = new Intent(this, MainActivity4.class);
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
             startActivity(intent);
         });
 
     }
-
 }

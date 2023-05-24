@@ -7,17 +7,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/left_chat_view"
         android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/teal_700"
+        android:backgroundTint="@color/gray"
         android:layout_marginEnd="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
         android:padding="8dp">
 
         <TextView
+            android:id="@+id/left_chat_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/left_chat_tv"
+            android:text="Hello World"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="Hello World"/>
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -29,6 +31,8 @@
         android:backgroundTint="@color/green"
         android:layout_marginStart="80dp"
         android:layout_alignParentEnd="true"
+
+        android:layout_marginBottom="10dp"
         android:padding="8dp">
 
         <TextView

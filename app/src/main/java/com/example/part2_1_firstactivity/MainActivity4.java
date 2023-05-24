@@ -100,11 +100,11 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-<<<<<<< HEAD
+
     private static final String MY_SECRET_KEY = "sk-*";
-=======
-    private static final String MY_SECRET_KEY = "sk-*";
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
+
+
+
 
 
 
@@ -562,7 +562,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
             }
-<<<<<<< HEAD
+
 
 //<<<<<<< HEAD
             /*if(resultStr.indexOf("카메라") > -1) {
@@ -581,8 +581,6 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 //            }
 //>>>>>>> db111e8c2dd2fba2442b4533f68032c4673a0267
 
-=======
->>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
 
 
         }

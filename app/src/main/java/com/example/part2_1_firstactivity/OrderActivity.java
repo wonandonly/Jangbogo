@@ -83,7 +83,7 @@ public class OrderActivity extends AppCompatActivity {
         adapter = new CustomChoiceListViewAdapter() ;
         listview = (ListView) findViewById(R.id.listview1);
         listview.setAdapter(adapter);
-        adapter.addItem((ArrayList<String>) list);
+        adapter.addItem((ArrayList<ListViewItem>) list);
 
         Button moveButton = findViewById(R.id.payBtn);
         moveButton.setOnClickListener(new View.OnClickListener() {
