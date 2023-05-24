@@ -23,9 +23,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,7 +40,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -88,7 +94,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "*";
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -193,9 +199,27 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         saverecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///////////////////////////
-                ///레시피 저장하기!!!///
-                ///////////////////////////
+                Map<String, Object> recipe = new HashMap<>();
+                recipe.put("datetime", FieldValue.serverTimestamp());
+                recipe.put("ingredient", ingredients);
+                recipe.put("jId", jId);
+                recipe.put("name", "후식");
+                recipe.put("recipe", cookingProcedure);
+
+                secondaryFirestore.collection("recipe")
+                        .add(recipe)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
 
             }
         });
