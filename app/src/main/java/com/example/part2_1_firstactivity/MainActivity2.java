@@ -69,6 +69,33 @@ public class MainActivity2 extends AppCompatActivity {
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
 
+            // 레시피 검색
+            Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
+                    .whereEqualTo("jId", jId)
+                    .whereEqualTo("name", "전채요리")
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            List list = new ArrayList();
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Map map = document.getData();
+                                    map.put("key", document.getId());
+                                    list.add(map);
+                                    //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                }
+                                Log.d(TAG, "list size : " + list.size());
+                                for (int i = 0; i < list.size(); i++){
+                                    Map tmp = (Map) list.get(i);
+                                    Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe"));
+                                    // addToChat(question, Message.SENT_BY_BOT);
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
             /*// 장바구니 리스트
             Task<QuerySnapshot> task = db.collection("cart")
                     .whereEqualTo("userId", jId)
