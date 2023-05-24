@@ -62,6 +62,8 @@ public class MainActivity3 extends AppCompatActivity {
             String id = "test@gmail.com";
             String pw = "admin123";
             Intent intent = new Intent(this, MainActivity4.class);
+            //startActivity(intent);
+
 
             mAuth.signInWithEmailAndPassword(id, pw)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

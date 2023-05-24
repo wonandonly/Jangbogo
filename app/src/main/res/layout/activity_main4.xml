@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="장바구니로 가기" />
+            android:text="주문 계속하기" />
 
         <Button
             android:id="@+id/save_recipe_button"
@@ -78,6 +78,8 @@
 
     </RelativeLayout>
 
+
+
     <EditText
         android:id="@+id/et_msg"
         android:layout_width="match_parent"
@@ -88,15 +90,17 @@
         android:padding="16dp"
         android:visibility="invisible"/>
 
-    <ImageButton
-        android:id="@+id/shop_btn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="17dp"
-        android:background="#00ff0000"
-        android:src="@drawable/shop_btn"
-        android:layout_alignParentEnd="true"
-        tools:ignore="SpeakableTextPresentCheck" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/shop_btn"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_marginRight="17dp"-->
+<!--        android:background="#00ff0000"-->
+<!--        android:src="@drawable/shop_btn"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        tools:ignore="SpeakableTextPresentCheck" />-->
+
+
 
 
 </RelativeLayout>
