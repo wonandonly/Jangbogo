@@ -73,7 +73,7 @@ public class MainActivity2 extends AppCompatActivity {
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
 
-            // 레시피 추가
+            /*// 레시피 추가
             Map<String, Object> recipe = new HashMap<>();
             recipe.put("datetime", FieldValue.serverTimestamp());
             recipe.put("ingredient", "재료, 수량\\ 재료,수량\\");
@@ -94,7 +94,7 @@ public class MainActivity2 extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             Log.w(TAG, "Error adding document", e);
                         }
-                    });
+                    });*/
 
             /*// 레시피 리스트
             Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
