@@ -9,11 +9,8 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
-
 import android.widget.Button;
-
 import android.widget.EditText;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -201,6 +198,9 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
         });
     }
+
+
+
 
     void addToChat(String message, String sentBy) {
         runOnUiThread(new Runnable() {
@@ -487,6 +487,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             //Log.e("TTS", "초기화 실패");
         }
     }
+
+
     private void initData() {
         shopBtn = findViewById(R.id.shop_btn);
     }
