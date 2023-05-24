@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -101,11 +100,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "sk-*";
-<<<<<<< HEAD
+    private static final String MY_SECRET_KEY = "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";
 
-=======
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -562,7 +558,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
             }
-<<<<<<< HEAD
+
 //<<<<<<< HEAD
             /*if(resultStr.indexOf("카메라") > -1) {
 =======
@@ -579,8 +575,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 //=======
 //            }
 //>>>>>>> db111e8c2dd2fba2442b4533f68032c4673a0267
-=======
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
+
 
 
         }

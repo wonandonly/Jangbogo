@@ -5,11 +5,8 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
-import android.util.SparseBooleanArray;
-=======
 import android.util.Log;
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,25 +14,18 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-
-import adapter.CustomChoiceListViewAdapter;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import adapter.CustomChoiceListViewAdapter;
 
 
 public class ShopActivity extends AppCompatActivity {
@@ -58,7 +48,7 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
 
-<<<<<<< HEAD
+
         Intent intent2 = getIntent();
 
         adapter = new CustomChoiceListViewAdapter() ;
@@ -71,6 +61,7 @@ public class ShopActivity extends AppCompatActivity {
 //        SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
         //checkedItems.get(0); <checked면 0, not checked면 1을 반환
         //int count = adapter.getCount() ;
+
         SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
         ArrayList<String> selectedItems = new ArrayList<>();
 
@@ -83,22 +74,22 @@ public class ShopActivity extends AppCompatActivity {
             }
         }
 
-=======
         db= FirebaseFirestore.getInstance();    // shop
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
+
 
         Button moveButton = findViewById(R.id.backBtn);
         moveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //OrderActivity로 넘어감
-                Intent intent = new Intent (getApplicationContext(), OrderActivity.class);
-                intent.putStringArrayListExtra("SelectedItems", selectedItems);
+                //Intent intent = new Intent (getApplicationContext(), OrderActivity.class);
+                //intent.putStringArrayListExtra("SelectedItems", selectedItems);
                 ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
+                Intent intent=new Intent (getApplicationContext(), OrderActivity.class);
                 startActivity(intent);
 
 //                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
-                    //startActivity(intent);
+                ///startActivity(intent);
 
             }
         });
@@ -110,9 +101,9 @@ public class ShopActivity extends AppCompatActivity {
     }
     private void addEventListener() {
         backBtn.setOnClickListener(view -> {
-<<<<<<< HEAD
+
             Intent intent = new Intent(this, OrderActivity.class);
-=======
+
             String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
             int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
@@ -180,8 +171,8 @@ public class ShopActivity extends AppCompatActivity {
                 });
             }
 
-            Intent intent = new Intent(this, MainActivity4.class);
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
+//            Intent intent = new Intent(this, MainActivity4.class);
+
             startActivity(intent);
         });
 

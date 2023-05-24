@@ -12,6 +12,11 @@
 <!--    <ListView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="644dp" />-->
+    <ListView
+        android:id="@+id/listview1"
+        android:layout_width="match_parent"
+        android:layout_height="638dp"
+        android:choiceMode="multipleChoice" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -26,13 +31,14 @@
         />
 
     <Button
-        android:id="@+id/backBtn"
+        android:id="@+id/payBtn"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_alignParentBottom="true"
         android:background="#D7547155"
-        android:text="선택 항목 주문하기"
+        android:text="결제하기"
         android:textSize="30dp"
         tools:ignore="MissingConstraints" />
+
 
 </RelativeLayout>
