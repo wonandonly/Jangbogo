@@ -102,10 +102,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
     private static final String MY_SECRET_KEY = "sk-*";
-<<<<<<< HEAD
 
-=======
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -562,25 +559,6 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
             }
-<<<<<<< HEAD
-//<<<<<<< HEAD
-            /*if(resultStr.indexOf("카메라") > -1) {
-=======
-            if(resultStr.indexOf("카메라") > -1) {
->>>>>>> db111e8c2dd2fba2442b4533f68032c4673a0267
-                String guideSt = "사진을 찍겠습니다.";
-                Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
-                funcVoiceOut(guideSt);
-
-                Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
-                startActivity(Cameraintent);
-<<<<<<< HEAD
-            }*/
-//=======
-//            }
-//>>>>>>> db111e8c2dd2fba2442b4533f68032c4673a0267
-=======
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 
 
         }
@@ -763,7 +741,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     public void moveActivity(String resultStr) {
 
         if(resultStr.indexOf("레시피") > -1) {
-            String guideStr = "액티비티를 넘어갑니다.";
+            String guideStr = "레시피를 검색합니다.";
             Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
             funcVoiceOut(guideStr);
 
