@@ -87,7 +87,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "sk-*";
+    private static final String MY_SECRET_KEY = "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";
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -339,6 +339,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                 }
                             }
                         });
+
+
             }
             else {
                 callAPI(resultStr);
