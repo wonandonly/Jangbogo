@@ -123,7 +123,8 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                     });*/
 
-            /*Task<QuerySnapshot> task = secondaryFirestore.collection("user")
+            /*//로그인 확인
+            Task<QuerySnapshot> task = secondaryFirestore.collection("user")
             .whereEqualTo("jId", jId)
             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
