@@ -18,8 +18,8 @@ public class MainActivity2 extends AppCompatActivity {
     public static final String KEY_NAME = "key name";
 
     private EditText nameEditText;
-    private Button okBtn;
-    private ImageButton micBtn;
+    private Button loginBtn;
+    private ImageButton startBtn;
     private FirebaseFirestore secondaryFirestore;
     private FirebaseFirestore db;
 
@@ -58,7 +58,7 @@ public class MainActivity2 extends AppCompatActivity {
             recipe.put("datetime", FieldValue.serverTimestamp());
             recipe.put("ingredient", "재료, 수량\\ 재료,수량\\");
             recipe.put("jId", jId);
-            recipe.put("name", "후식233");
+            recipe.put("name", "후식");
             recipe.put("recipe", "testtest");
 
             secondaryFirestore.collection("recipe")
@@ -75,6 +75,17 @@ public class MainActivity2 extends AppCompatActivity {
                             Log.w(TAG, "Error adding document", e);
                         }
                     });*/
+
+
+            /*String url = "https://jangbogo-shop-default-rtdb.firebaseio.com/recipe.json";
+            Map<String, String> body = new HashMap<>();
+            //body.put("datetime", "2023년 5월 24일 오후 3시 38분 32초 UTC+9");
+            body.put("ingredient", "재료, 수량\\ 재료,수량\\");
+            body.put("jId", jId);
+            body.put("name", "후식");
+            body.put("recipe", "testtest");
+            OkhttpUtils.post(url, body, MediaType.parse("application/json; charset=utf-8"));
+            Log.d(TAG, "success insert recipe");*/
 
             /*// 레시피 리스트
             Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
@@ -103,8 +114,7 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                     });*/
 
-            /*//로그인 확인
-            Task<QuerySnapshot> task = secondaryFirestore.collection("user")
+            /*Task<QuerySnapshot> task = secondaryFirestore.collection("user")
             .whereEqualTo("jId", jId)
             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -138,12 +148,12 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void initData() {
         //nameEditText = findViewById(R.id.nameEditText);
-        okBtn = findViewById(R.id.Button1);
-        micBtn=findViewById(R.id.imageButton2);
+        loginBtn = findViewById(R.id.Button1);
+        startBtn=findViewById(R.id.imageButton2);
     }
 
     private void addEventListener() {
-        okBtn.setOnClickListener(view -> {
+        loginBtn.setOnClickListener(view -> {
 //            1. 현재 nameEditText 뷰 컴포넌트에 값을 가져온다. (방어적 코드)
 //            2. 화면 전환 로직 (인텐트)
             //String name = nameEditText.getText().toString();
@@ -157,7 +167,7 @@ public class MainActivity2 extends AppCompatActivity {
             //intent.putExtra(KEY_NAME, name);
             startActivity(intent);
         });
-        micBtn.setOnClickListener(view -> {
+        startBtn.setOnClickListener(view -> {
             // 이벤트 핸들러 로직 작성
             Intent intent = new Intent(this, MainActivity4.class);
             //intent.putExtra(KEY_NAME, name);

@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -60,24 +61,21 @@ public class MainActivity3 extends AppCompatActivity {
 
             String id = "test@gmail.com";
             String pw = "admin123";
+            Intent intent = new Intent(this, MainActivity4.class);
 
             mAuth.signInWithEmailAndPassword(id, pw)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                //updateUI(user);
+                                startActivity(intent);
+                                // 뒤로 가기 안 되게 하는 방법 생각해야됨..
                             } else {
-                                // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                //        Toast.LENGTH_SHORT).show();
-                                //updateUI(null);
+                                Toast.makeText(MainActivity3.this, "다시 시도해 주세요.",Toast.LENGTH_SHORT).show();
                             }
-
                             // logout = FirebaseAuth.getInstance().signOut();
                         }
                     });
