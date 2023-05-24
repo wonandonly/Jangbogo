@@ -87,7 +87,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "sk-*";
+    private static final String MY_SECRET_KEY = "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";
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -345,14 +345,14 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
             }
-            /*if(resultStr.indexOf("카메라") > -1) {
+            if(resultStr.indexOf("카메라") > -1) {
                 String guideSt = "사진을 찍겠습니다.";
                 Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
                 funcVoiceOut(guideSt);
 
                 Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
                 startActivity(Cameraintent);
-            }*/
+            }
 
 
         }
