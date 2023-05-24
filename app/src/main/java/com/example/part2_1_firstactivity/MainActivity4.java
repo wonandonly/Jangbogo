@@ -8,6 +8,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,9 +22,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,8 +85,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     OkHttpClient client;
     private String cookingProcedure;
     private List<String> ingredients;
-
-    private static final String MY_SECRET_KEY = "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";
+    String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
     private static final String MY_SECRET_KEY = "sk-*";
 
@@ -188,7 +193,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             @Override
             public void onClick(View v) {
                 ///////////////////////////
-                ///저장한 레시피 불러오기!!!///
+                ///레시피 저장하기!!!///
                 ///////////////////////////
 
             }
@@ -293,17 +298,63 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 resultStr = matches.get(i);
                 addToChat(resultStr, Message.SENT_BY_ME);
                 et_msg.setText("");
-                callAPI(resultStr);
-                tv_welcome.setVisibility(View.GONE);
 
-                //textView.setText(matches.get(i));
             }
-
             if(resultStr.length() < 1) return;
             resultStr = resultStr.replace(" ", "");
             saverecipeBtn.setVisibility(View.INVISIBLE);
             gotolistBtn.setVisibility(View.INVISIBLE);
-            moveActivity(resultStr);
+
+
+            if(resultStr.indexOf("저장") > -1) {
+                tv_welcome.setVisibility(View.GONE);
+                String guideSt = "저장한 레시피를 불러옵니다.";
+                Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
+                funcVoiceOut(guideSt);
+                Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
+                        .whereEqualTo("jId", jId)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                List list = new ArrayList();
+                                String recipeStr = "";
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Map map = document.getData();
+                                        map.put("key", document.getId());
+                                        list.add(map);
+                                        //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                    }
+                                    Log.d(TAG, "list size : " + list.size());
+                                    for (int i = 0; i < list.size(); i++){
+                                        Map tmp = (Map) list.get(i);
+                                        Log.d(TAG, "list : " + tmp.get("name"));
+                                        recipeStr += (i + 1) +". " + tmp.get("name")+"\n";
+                                        // 함수 넣으면 됨! -
+                                        //addToChat(i+". " + tmp.get("name"), Message.SENT_BY_BOT);
+                                    }
+                                    addToChat(recipeStr, Message.SENT_BY_BOT);
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+            }
+            else {
+                callAPI(resultStr);
+                tv_welcome.setVisibility(View.GONE);
+                moveActivity(resultStr);
+            }
+            /*if(resultStr.indexOf("카메라") > -1) {
+                String guideSt = "사진을 찍겠습니다.";
+                Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
+                funcVoiceOut(guideSt);
+
+                Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
+                startActivity(Cameraintent);
+            }*/
+
+
         }
 
         @Override
@@ -478,14 +529,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             gotolistBtn.setVisibility(View.VISIBLE);
 
         }
-        if(resultStr.indexOf("카메라") > -1) {
-            String guideSt = "사진을 찍겠습니다.";
-            Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
-            funcVoiceOut(guideSt);
 
-            Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
-            startActivity(Cameraintent);
-        }
     }
     public void funcVoiceOut(String OutMsg){
         if(OutMsg.length()<1)return;
