@@ -98,7 +98,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-*";
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -644,7 +644,29 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                         jsonObject = new JSONObject(responseBody);
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         if (jsonArray.length() > 0) {
+                            //로그 전송
                             String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
+                            Map<String, Object> voiceLog = new HashMap<>();
+                            voiceLog.put("datetime", FieldValue.serverTimestamp());
+                            voiceLog.put("inputText", question);
+                            voiceLog.put("outputText", result);
+                            voiceLog.put("jId", jId);
+                            voiceLog.put("resultType", 1);
+
+                            secondaryFirestore.collection("voiceLog")
+                                    .add(voiceLog)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error adding document", e);
+                                        }
+                                    });
 
                             ingredients = extractIngredients(result);
                             addResponse(result.trim());
