@@ -83,7 +83,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private String cookingProcedure;
     private List<String> ingredients;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-*";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
@@ -421,7 +421,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 
                             // Add ingredients to chat(하나씩 추가)
                             for (String ingredient : ingredients) {
-                                addResponse(ingredient);
+                                //addResponse(ingredient);
                                 //여기서 재료 장바구니로 보내면 됨(변수: ingredient)
                             }
 
