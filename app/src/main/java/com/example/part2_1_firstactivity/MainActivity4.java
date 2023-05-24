@@ -23,9 +23,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,7 +40,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +58,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+
+
 
 //import android.telecom.Call;
 
@@ -70,6 +79,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     TextView textView;
     String resultStr;
     String resultStr2;
+    String foodName;
     final int PERMISSION = 1;
 
     RecyclerView recycler_view;
@@ -92,7 +102,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
     private static final String MY_SECRET_KEY = "sk-*";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -208,10 +221,28 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         saverecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///////////////////////////
-                ///레시피 저장하기!!!///
-                ///////////////////////////
+                Map<String, Object> recipe = new HashMap<>();
+                recipe.put("datetime", FieldValue.serverTimestamp());
+                recipe.put("ingredient", ingredients);
+                recipe.put("jId", jId);
+                recipe.put("name", foodName);
+                recipe.put("recipe", cookingProcedure);
 
+                secondaryFirestore.collection("recipe")
+                        .add(recipe)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+                Toast.makeText(getApplicationContext(), "레시피가 저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -346,7 +377,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                 }else {
                                     for (int i = 0; i < list.size(); i++) {
                                         Map tmp = (Map) list.get(i);
-                                        recipeSearchStr += tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe") + "\n";
+                                        recipeSearchStr += tmp.get("name") + " 레시피\n" + tmp.get("recipe") + "\n";
                                         Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe"));
 
                                     }
@@ -459,6 +490,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
+            String[] words = matches.get(0).split(" ");  // 문장을 공백으로 분리하여 단어 배열 생성
+            if (words.length > 0) {
+                foodName =  words[0];  // 첫 번째 단어 반환
+            }
             for (int i = 0; i < matches.size(); i++) {
                 resultStr = matches.get(i);
                 addToChat(resultStr, Message.SENT_BY_ME);
@@ -527,6 +562,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
             }
+<<<<<<< HEAD
 //<<<<<<< HEAD
             /*if(resultStr.indexOf("카메라") > -1) {
 =======
@@ -543,6 +579,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 //=======
 //            }
 //>>>>>>> db111e8c2dd2fba2442b4533f68032c4673a0267
+=======
+>>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 
 
         }
@@ -653,7 +691,29 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                         jsonObject = new JSONObject(responseBody);
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         if (jsonArray.length() > 0) {
+                            //로그 전송
                             String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
+                            Map<String, Object> voiceLog = new HashMap<>();
+                            voiceLog.put("datetime", FieldValue.serverTimestamp());
+                            voiceLog.put("inputText", question);
+                            voiceLog.put("outputText", result);
+                            voiceLog.put("jId", jId);
+                            voiceLog.put("resultType", 1);
+
+                            secondaryFirestore.collection("voiceLog")
+                                    .add(voiceLog)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error adding document", e);
+                                        }
+                                    });
 
                             ingredients = extractIngredients(result);
                             addResponse(result.trim());
@@ -756,8 +816,5 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 //            startActivity(intent);
 //        });
 //    }
-
-
-
 
 }
