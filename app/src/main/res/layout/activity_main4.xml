@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="'{요리이름} 레시피 알려줘'\n라고 말해보세요."
+        android:text="'{요리이름} 레시피 알려줘'\n '저장한 레시피 알려줘'\n라고 말해보세요."
         android:textSize="28sp" />
 
     <ImageButton
@@ -88,15 +88,15 @@
         android:padding="16dp"
         android:visibility="invisible"/>
 
-    <ImageButton
-        android:id="@+id/shop_btn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="17dp"
-        android:background="#00ff0000"
-        android:src="@drawable/shop_btn"
-        android:layout_alignParentEnd="true"
-        tools:ignore="SpeakableTextPresentCheck" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/shop_btn"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginRight="17dp"-->
+<!--        android:background="#00ff0000"-->
+<!--        android:src="@drawable/shop_btn"-->
+<!--        tools:ignore="SpeakableTextPresentCheck" />-->
 
 
 </RelativeLayout>

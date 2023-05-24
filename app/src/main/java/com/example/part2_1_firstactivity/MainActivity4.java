@@ -68,6 +68,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 
     TextView textView;
     String resultStr;
+    String resultStr2;
     final int PERMISSION = 1;
 
     RecyclerView recycler_view;
@@ -87,7 +88,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     private List<String> ingredients;
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "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";
 
 
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -103,8 +104,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        initData();
-        addEventListener();
+//        initData();
+//        addEventListener();
         sttBtn = findViewById(R.id.imageBtn);
         btn_send = findViewById(R.id.btn_send);
         recycler_view = findViewById(R.id.recycler_view);
@@ -199,14 +200,14 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
         });
 
-        ImageButton moveButton = findViewById(R.id.shop_btn);
-        moveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (getApplicationContext(), ShopActivity.class);
-                startActivity(intent);
-            }
-        });
+        //ImageButton moveButton = findViewById(R.id.shop_btn);
+//        moveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent (getApplicationContext(), ShopActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
 
@@ -225,6 +226,151 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
         });
     }
+    //실행시에도 chatgpt를 부르지 않는 음성인식 모델
+    private RecognitionListener listener2 = new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+            Toast.makeText(getApplicationContext(), "음성인식을 시작합니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+        }
+
+        @Override
+        public void onError(int error) {
+            String message;
+
+            switch (error) {
+                case SpeechRecognizer.ERROR_AUDIO:
+                    message = "오디오 에러";
+                    break;
+                case SpeechRecognizer.ERROR_CLIENT:
+                    message = "클라이언트 에러";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    message = "퍼미션 없음";
+                    break;
+                case SpeechRecognizer.ERROR_NETWORK:
+                    message = "네트워크 에러";
+                    break;
+                case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                    message = "네트웍 타임아웃";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    message = "찾을 수 없음";
+                    break;
+                case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                    message = "RECOGNIZER가 바쁨";
+                    break;
+                case SpeechRecognizer.ERROR_SERVER:
+                    message = "서버가 이상함";
+                    break;
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    message = "말하는 시간초과";
+                    break;
+                default:
+                    message = "알 수 없는 오류임";
+                    break;
+            }
+
+            Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
+            ArrayList<String> matches =
+                    results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
+            for (int i = 0; i < matches.size(); i++) {
+                resultStr2 = matches.get(i);
+                addToChat(resultStr2, Message.SENT_BY_ME);
+                et_msg.setText("");
+
+            }
+            if(resultStr2.length() < 1) return;
+            resultStr2 = resultStr2.replace(" ", "");
+            saverecipeBtn.setVisibility(View.INVISIBLE);
+            gotolistBtn.setVisibility(View.INVISIBLE);
+
+            Task<QuerySnapshot> searchTask = secondaryFirestore.collection("recipe")
+                    .whereEqualTo("jId", jId)
+                    .whereEqualTo("name", resultStr2)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> searchTask) {
+                            List list = new ArrayList();
+                            String recipeSearchStr = "";
+                            if (searchTask.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : searchTask.getResult()) {
+                                    Map map = document.getData();
+                                    map.put("key", document.getId());
+                                    list.add(map);
+                                    //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                }
+                                Log.d(TAG, "list size : " + list.size());
+                                if(list.isEmpty()){
+                                    addToChat("해당 레시피가 저장되지 않았습니다.", Message.SENT_BY_BOT);
+                                }else {
+                                    for (int i = 0; i < list.size(); i++) {
+                                        Map tmp = (Map) list.get(i);
+                                        recipeSearchStr += tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe") + "\n";
+                                        Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("name") + ", " + tmp.get("recipe"));
+
+                                    }
+                                    addToChat(recipeSearchStr, Message.SENT_BY_BOT);
+                                    addToChat("요리 완성 사진을 찍으려면 카메라라고 말씀해주세요.", Message.SENT_BY_BOT);
+                                    mRecognizer = SpeechRecognizer.createSpeechRecognizer(MainActivity4.this);
+                                    mRecognizer.setRecognitionListener(listener2);
+                                    try {
+                                        TimeUnit.SECONDS.sleep(3);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    mRecognizer.startListening(intent);
+                                }
+
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", searchTask.getException());
+                            }
+                        }
+                    });
+
+            if(resultStr2.indexOf("카메라") > -1) {
+                String guideSt = "사진을 찍겠습니다.";
+                Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
+                funcVoiceOut(guideSt);
+
+                Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
+                startActivity(Cameraintent);
+            }
+
+
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+        }
+    };
+
+
 
     private RecognitionListener listener = new RecognitionListener() {
         @Override
@@ -334,12 +480,21 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                         //addToChat(i+". " + tmp.get("name"), Message.SENT_BY_BOT);
                                     }
                                     addToChat(recipeStr, Message.SENT_BY_BOT);
+                                    mRecognizer = SpeechRecognizer.createSpeechRecognizer(MainActivity4.this);
+                                    mRecognizer.setRecognitionListener(listener2);
+                                    try {
+                                        TimeUnit.SECONDS.sleep(3);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    mRecognizer.startListening(intent);
+
+
                                 } else {
                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                 }
                             }
                         });
-
 
             }
             else {
@@ -484,12 +639,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                 //레시피
                                 //Log.d(TAG, cookingProcedure);
                                 //addResponse(cookingProcedure);
-                            } else {
-                                addResponse("No ingredients found in the recipe.");
                             }
 
-                        } else {
-                            addResponse("No recipe choices found.");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -550,15 +701,15 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     }
 
 
-    private void initData() {
-        shopBtn = findViewById(R.id.shop_btn);
-    }
-    private void addEventListener() {
-        shopBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ShopActivity.class);
-            startActivity(intent);
-        });
-    }
+//    private void initData() {
+//        shopBtn = findViewById(R.id.shop_btn);
+//    }
+//    private void addEventListener() {
+//        shopBtn.setOnClickListener(view -> {
+//            Intent intent = new Intent(this, ShopActivity.class);
+//            startActivity(intent);
+//        });
+//    }
 
 
 
