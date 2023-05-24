@@ -76,7 +76,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "sk-*";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
@@ -376,7 +376,14 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         });
     }
     public void moveActivity(String resultStr) {
+        if(resultStr.indexOf("재료") > -1) {
+            String guideStr = "액티비티를 넘어갑니다.";
+            Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
+            funcVoiceOut(guideStr);
 
+            //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
+            //startActivity(intent);
+        }
         if(resultStr.indexOf("레시피") > -1) {
             String guideStr = "액티비티를 넘어갑니다.";
             Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
