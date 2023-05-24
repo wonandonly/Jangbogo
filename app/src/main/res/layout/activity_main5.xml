@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--장바구니 페이지-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ExtraText">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!--android:entries="" : 장바구니 array-->/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:id="@+id/lv"/>
+
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:background="#D7547155"
+        android:text="채팅방으로 돌아가기"
+        android:textSize="30dp"
+        tools:ignore="MissingConstraints" />
+
+
+</RelativeLayout>

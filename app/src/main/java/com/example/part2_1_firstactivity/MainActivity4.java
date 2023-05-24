@@ -8,8 +8,8 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,6 +55,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     Intent intent;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
+
+    Button saverecipeBtn;
+    Button gotolistBtn;
+
     TextView textView;
     String resultStr;
     final int PERMISSION = 1;
@@ -91,10 +94,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         setContentView(R.layout.activity_main4);
         sttBtn = findViewById(R.id.imageBtn);
         btn_send = findViewById(R.id.btn_send);
-
         recycler_view = findViewById(R.id.recycler_view);
         tv_welcome = findViewById(R.id.tv_welcome);
         et_msg = findViewById(R.id.et_msg);
+
 
         //jangbogo어플 서버 초기화
         //FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
@@ -139,6 +142,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         // xml의 버튼과 텍스트 뷰 연결
         textView = (TextView)findViewById(R.id.tv_welcome);
         sttBtn = (ImageButton)findViewById(R.id.imageBtn);
+        saverecipeBtn=(Button)findViewById(R.id.save_recipe_button);
+        saverecipeBtn.setVisibility(View.INVISIBLE);
+        gotolistBtn=(Button)findViewById(R.id.goto_list_button);
+        gotolistBtn.setVisibility(View.INVISIBLE);
 
         // RecognizerIntent 객체 생성
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -159,6 +166,26 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                       }
                                   }
         );
+
+        gotolistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        saverecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ///////////////////////////
+                ///저장한 레시피 불러오기!!!///
+                ///////////////////////////
+
+            }
+        });
+
+
     }
 
     void addToChat(String message, String sentBy) {
@@ -255,6 +282,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 
             if(resultStr.length() < 1) return;
             resultStr = resultStr.replace(" ", "");
+            saverecipeBtn.setVisibility(View.INVISIBLE);
+            gotolistBtn.setVisibility(View.INVISIBLE);
             moveActivity(resultStr);
         }
 
@@ -404,11 +433,15 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             List<String> ingredients = extractIngredients(resultStr);
             String cookingProcedure = extractCookingProcedure(resultStr);
             //재료, 만드는 방법 잘 받아와지는지 확인
-            Log.d(TAG, ingredients.get(1));
-            Log.d(TAG, cookingProcedure);
+            //Log.d(TAG, ingredients.get(1));
+            //Log.d(TAG, cookingProcedure);
 
             //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
             //startActivity(intent);
+            
+            //장바구니로 가기, 레시피 저장하기 버튼 생김
+            saverecipeBtn.setVisibility(View.VISIBLE);
+            gotolistBtn.setVisibility(View.VISIBLE);
 
         }
         if(resultStr.indexOf("카메라") > -1) {
@@ -432,8 +465,11 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             tts.setLanguage(Locale.KOREAN);
             tts.setPitch(1);
         } else {
-            Log.e("TTS", "초기화 실패");
+            //Log.e("TTS", "초기화 실패");
         }
     }
+
+
+
 
 }
