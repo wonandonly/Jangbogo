@@ -71,7 +71,6 @@ public class MainActivity3 extends AppCompatActivity {
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 startActivity(intent);
-                                // 뒤로 가기 안 되게 하는 방법 생각해야됨..
                             } else {
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 Toast.makeText(MainActivity3.this, "다시 시도해 주세요.",Toast.LENGTH_SHORT).show();

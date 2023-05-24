@@ -2,15 +2,31 @@ package com.example.part2_1_firstactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -53,6 +69,131 @@ public class MainActivity2 extends AppCompatActivity {
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
 
+            /*// 장바구니 리스트
+            Task<QuerySnapshot> task = db.collection("cart")
+                    .whereEqualTo("userId", jId)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            List list = new ArrayList();
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Map map = document.getData();
+                                    map.put("key", document.getId());
+                                    list.add(map);
+                                    //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                }
+                                Log.d(TAG, "list size : " + list.size());
+                                for (int i = 0; i < list.size(); i++){
+                                    Map tmp = (Map) list.get(i);
+                                    Log.d(TAG, tmp.get("key") + ", list : " + tmp.get("productName"));
+                                    // addToChat(question, Message.SENT_BY_BOT);
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });*/
+
+
+            /*// 상품 검색
+            Task<QuerySnapshot> task = db.collection("product").where(Filter.or(
+                            Filter.equalTo("type", "간장"),
+                            Filter.equalTo("type", "두부"),
+                            Filter.equalTo("type", ""),
+                            Filter.equalTo("type", ""),
+                            Filter.equalTo("type", ""),
+                            Filter.equalTo("type", "")
+                    )).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            List list = new ArrayList();
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Map map = document.getData();
+                                    map.put("key", document.getId());
+                                    list.add(map);
+                                    //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                }
+                                //Log.d(TAG, "list size : " + list.size());
+                                for (int i = 0; i < list.size(); i++){
+                                    Map tmp = (Map) list.get(i);
+                                    Log.d(TAG, "list : " + tmp.get("type") + " : " + tmp.get("name") + ", " + tmp.get("size"));
+                                    // addToChat(question, Message.SENT_BY_BOT);
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });*/
+
+            /*// 상품 추가
+            Map<String, Object> product = new HashMap<>();
+            product.put("type", "김치");
+            product.put("name", "종가집 김치");
+            product.put("size", "1kg");
+
+            db.collection("product")
+                    .add(product)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });*/
+
+            /*// 장바구니 추가
+            Map<String, Object> cart = new HashMap<>();
+            cart.put("userId", jId);
+            cart.put("datetime", FieldValue.serverTimestamp());
+            cart.put("productId", "7SVb5NDWCOCZksbPPlrv6");
+            cart.put("productName", "풀무원 맛있는 간장");
+            cart.put("productCount", 1);
+
+            db.collection("cart")
+                    .add(cart)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });*/
+
+            /*// 로그 추가
+            Map<String, Object> voiceLog = new HashMap<>();
+            voiceLog.put("datetime", FieldValue.serverTimestamp());
+            voiceLog.put("inputText", "사용자 질문");
+            voiceLog.put("outputText", "chat GPT 답변");
+            voiceLog.put("jId", jId);
+            voiceLog.put("resultType", 1);
+
+            secondaryFirestore.collection("voiceLog")
+                    .add(voiceLog)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });*/
+
             /*// 레시피 추가
             Map<String, Object> recipe = new HashMap<>();
             recipe.put("datetime", FieldValue.serverTimestamp());
@@ -75,17 +216,6 @@ public class MainActivity2 extends AppCompatActivity {
                             Log.w(TAG, "Error adding document", e);
                         }
                     });*/
-
-
-            /*String url = "https://jangbogo-shop-default-rtdb.firebaseio.com/recipe.json";
-            Map<String, String> body = new HashMap<>();
-            //body.put("datetime", "2023년 5월 24일 오후 3시 38분 32초 UTC+9");
-            body.put("ingredient", "재료, 수량\\ 재료,수량\\");
-            body.put("jId", jId);
-            body.put("name", "후식");
-            body.put("recipe", "testtest");
-            OkhttpUtils.post(url, body, MediaType.parse("application/json; charset=utf-8"));
-            Log.d(TAG, "success insert recipe");*/
 
             /*// 레시피 리스트
             Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
