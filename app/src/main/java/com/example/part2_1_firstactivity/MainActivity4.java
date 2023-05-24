@@ -59,6 +59,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     Intent intent;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
+
+    Button saverecipeBtn;
+    Button gotolistBtn;
+
     TextView textView;
     String resultStr;
     final int PERMISSION = 1;
@@ -76,8 +80,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
+    private String cookingProcedure;
+    private List<String> ingredients;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "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";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
@@ -96,10 +102,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         addEventListener();
         sttBtn = findViewById(R.id.imageBtn);
         btn_send = findViewById(R.id.btn_send);
-
         recycler_view = findViewById(R.id.recycler_view);
         tv_welcome = findViewById(R.id.tv_welcome);
         et_msg = findViewById(R.id.et_msg);
+
 
         //jangbogo어플 서버 초기화
         //FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
@@ -144,6 +150,10 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         // xml의 버튼과 텍스트 뷰 연결
         textView = (TextView)findViewById(R.id.tv_welcome);
         sttBtn = (ImageButton)findViewById(R.id.imageBtn);
+        saverecipeBtn=(Button)findViewById(R.id.save_recipe_button);
+        saverecipeBtn.setVisibility(View.INVISIBLE);
+        gotolistBtn=(Button)findViewById(R.id.goto_list_button);
+        gotolistBtn.setVisibility(View.INVISIBLE);
 
         // RecognizerIntent 객체 생성
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -163,7 +173,26 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                           mRecognizer.startListening(intent);
                                       }
                                   }
-                );
+
+        );
+
+        gotolistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        saverecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ///////////////////////////
+                ///저장한 레시피 불러오기!!!///
+                ///////////////////////////
+
+            }
+        });
 
         ImageButton moveButton = findViewById(R.id.shop_btn);
         moveButton.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +203,9 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
         });
     }
+
+
+
 
     void addToChat(String message, String sentBy) {
         runOnUiThread(new Runnable() {
@@ -269,6 +301,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
 
             if(resultStr.length() < 1) return;
             resultStr = resultStr.replace(" ", "");
+            saverecipeBtn.setVisibility(View.INVISIBLE);
+            gotolistBtn.setVisibility(View.INVISIBLE);
             moveActivity(resultStr);
         }
 
@@ -282,7 +316,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     };
 
     void addResponse(String response){
-        messageList.remove(messageList.size()-1);
+        //messageList.remove(messageList.size()-1);
         addToChat(response, Message.SENT_BY_BOT);
     }
     void callAPI(String question) {
@@ -338,7 +372,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
             List<String> extractIngredients(String recipe) {
                 List<String> ingredients = new ArrayList<>();
-                Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
+                //Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
 
                 int startIdx = recipe.indexOf("재료:");
                 int endIdx = recipe.indexOf("만드는 방법:");
@@ -346,12 +380,15 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                     return ingredients; // 재료 또는 조리 절차 텍스트가 없는 경우 빈 목록 반환
                 }
                 String ingredientText = recipe.substring(startIdx + 4, endIdx); // "재료:" 다음 문자부터 추출
+                String[] ingredientLines = ingredientText.split("\n");
 
-                Matcher matcher1 = pattern.matcher(ingredientText);
-                while (matcher1.find()) {
-                    String ingredient = matcher1.group(1) + ": " + matcher1.group(2);
-                    ingredients.add(ingredient);
+                for (String line : ingredientLines) {
+                    line = line.trim(); // 양쪽 공백 제거
+                    if (!line.isEmpty()) {
+                        ingredients.add(line.replace("-", "").trim());
+                    }
                 }
+
                 return ingredients;
             }
 
@@ -369,25 +406,31 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
                     JSONObject jsonObject = null;
                     try {
-                        jsonObject = new JSONObject(response.body().string());
+                        jsonObject = new JSONObject(responseBody);
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         if (jsonArray.length() > 0) {
                             String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
-                            addResponse(result.trim());
-                            List<String> ingredients = extractIngredients(result);
 
-                            // Add ingredients to chat
+                            ingredients = extractIngredients(result);
+                            addResponse(result.trim());
+                            //Log.d(TAG, responseBody);
+                            //Log.d(TAG, result);
+
+                            // Add ingredients to chat(하나씩 추가)
                             for (String ingredient : ingredients) {
                                 addResponse(ingredient);
+                                //여기서 재료 장바구니로 보내면 됨(변수: ingredient)
                             }
 
                             if (!ingredients.isEmpty()) {
                                 //Log.d(TAG, ingredients.get(0));
-                                String cookingProcedure = extractCookingProcedure(result);
+                                cookingProcedure = extractCookingProcedure(result);
+                                //레시피
                                 //Log.d(TAG, cookingProcedure);
-                                addResponse(cookingProcedure);
+                                //addResponse(cookingProcedure);
                             } else {
                                 addResponse("No ingredients found in the recipe.");
                             }
@@ -401,6 +444,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 } else {
                     addResponse("Failed to load response due to " + response.body().string());
                 }
+
             }
         });
     }
@@ -417,12 +461,21 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             //String cookingProcedure = extractCookingProcedure(resultStr);
             //addToChat("재료를 장바구니에 넣으려면 장바구니, 레시피 저장을 하시려면 레시피저장이라고 말씀해주세요", Message.SENT_BY_BOT);
             //재료, 만드는 방법 잘 받아와지는지 확인
+
+            //Log.d(TAG, ingredients.get(1));
+            //Log.d(TAG, cookingProcedure);
+
             //Log.d(TAG, ingredients.size());
+
 
 
 
             //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
             //startActivity(intent);
+            
+            //장바구니로 가기, 레시피 저장하기 버튼 생김
+            saverecipeBtn.setVisibility(View.VISIBLE);
+            gotolistBtn.setVisibility(View.VISIBLE);
 
         }
         if(resultStr.indexOf("카메라") > -1) {
@@ -446,9 +499,11 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             tts.setLanguage(Locale.KOREAN);
             tts.setPitch(1);
         } else {
-            Log.e("TTS", "초기화 실패");
+            //Log.e("TTS", "초기화 실패");
         }
     }
+
+
     private void initData() {
         shopBtn = findViewById(R.id.shop_btn);
     }
@@ -458,5 +513,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             startActivity(intent);
         });
     }
+
+
+
 
 }
