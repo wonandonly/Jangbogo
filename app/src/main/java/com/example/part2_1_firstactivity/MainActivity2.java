@@ -14,16 +14,23 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.MediaType;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -66,6 +73,30 @@ public class MainActivity2 extends AppCompatActivity {
         int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
         if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
 
+            // 레시피 추가
+            Map<String, Object> recipe = new HashMap<>();
+            recipe.put("datetime", FieldValue.serverTimestamp());
+            recipe.put("ingredient", "재료, 수량\\ 재료,수량\\");
+            recipe.put("jId", jId);
+            recipe.put("name", "후식233");
+            recipe.put("recipe", "testtest");
+
+            secondaryFirestore.collection("recipe")
+                    .add(recipe)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });
+
+            /*// 레시피 리스트
             Task<QuerySnapshot> task = secondaryFirestore.collection("recipe")
                     .whereEqualTo("jId", jId)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -90,7 +121,7 @@ public class MainActivity2 extends AppCompatActivity {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
                         }
-                    });
+                    });*/
 
             /*Task<QuerySnapshot> task = secondaryFirestore.collection("user")
             .whereEqualTo("jId", jId)
