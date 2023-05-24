@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="ExtraText">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <!--android:entries="" : 장바구니 array-->/>
+    <!--android:entries="" : 장바구니 array-->
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="648dp"
-        android:id="@+id/lv"/>
-
+        android:layout_height="650dp"
+    />
 
     <Button
         android:id="@+id/backBtn"
@@ -24,4 +24,5 @@
         android:text="채팅방으로 돌아가기"
         android:textSize="30dp"
         tools:ignore="MissingConstraints" />
+
 </RelativeLayout>

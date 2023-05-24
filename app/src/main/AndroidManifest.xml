@@ -3,8 +3,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-feature android:name="android.hardware.camera"/>
 
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +23,7 @@
             android:name=".MainActivity3"
             android:exported="true"
             android:label="@string/title_activity_main3"
+            android:noHistory="true"
             android:theme="@style/Theme.Part21FirstActivity.NoActionBar" />
         <activity
             android:name=".MainActivity2"
@@ -33,10 +34,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.speech.RecognitionService" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
