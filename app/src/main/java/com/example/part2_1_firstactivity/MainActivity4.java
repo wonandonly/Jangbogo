@@ -347,14 +347,14 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                 tv_welcome.setVisibility(View.GONE);
                 moveActivity(resultStr);
             }
-            /*if(resultStr.indexOf("카메라") > -1) {
+            if(resultStr.indexOf("카메라") > -1) {
                 String guideSt = "사진을 찍겠습니다.";
                 Toast.makeText(getApplicationContext(), guideSt, Toast.LENGTH_SHORT).show();
                 funcVoiceOut(guideSt);
 
                 Intent Cameraintent = new Intent(getApplicationContext(), CameraActivity.class);
                 startActivity(Cameraintent);
-            }*/
+            }
 
 
         }
