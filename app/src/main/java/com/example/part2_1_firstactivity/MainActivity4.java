@@ -55,6 +55,7 @@ import okhttp3.Response;
 public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private static final String TAG = "TAG";
+    private ImageButton shopBtn;
     Intent intent;
     SpeechRecognizer mRecognizer;
     ImageButton sttBtn;
@@ -91,6 +92,8 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
+        initData();
+        addEventListener();
         sttBtn = findViewById(R.id.imageBtn);
         btn_send = findViewById(R.id.btn_send);
 
@@ -161,6 +164,15 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                       }
                                   }
                 );
+
+        ImageButton moveButton = findViewById(R.id.shop_btn);
+        moveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getApplicationContext(), ShopActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     void addToChat(String message, String sentBy) {
@@ -422,6 +434,15 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         } else {
             Log.e("TTS", "초기화 실패");
         }
+    }
+    private void initData() {
+        shopBtn = findViewById(R.id.shop_btn);
+    }
+    private void addEventListener() {
+        shopBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ShopActivity.class);
+            startActivity(intent);
+        });
     }
 
 }

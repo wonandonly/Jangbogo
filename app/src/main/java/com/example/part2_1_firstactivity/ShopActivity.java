@@ -15,18 +15,23 @@ import android.widget.TextView;
 
 public class ShopActivity extends AppCompatActivity {
 
+    private Button backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
+        initData();
+        addEventListener();
+    }
 
-        Button moveButton = findViewById(R.id.backBtn);
-        moveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (getApplicationContext(), MainActivity4.class);
-                startActivity(intent);
-            }
+    private void initData() {
+        backBtn = findViewById(R.id.backBtn);
+    }
+    private void addEventListener() {
+        backBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, MainActivity4.class);
+            startActivity(intent);
         });
     }
+
 }

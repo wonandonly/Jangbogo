@@ -12,7 +12,7 @@
         <!--android:entries="" : 장바구니 array-->/>
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="648dp"
         android:id="@+id/lv"/>
 
 
