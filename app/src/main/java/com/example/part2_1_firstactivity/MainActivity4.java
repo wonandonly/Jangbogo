@@ -77,7 +77,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     OkHttpClient client;
 
-    private static final String MY_SECRET_KEY = "sk-*";
+    private static final String MY_SECRET_KEY = "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";
 
     FirebaseOptions options = new FirebaseOptions.Builder()
             .setApplicationId("1:374943218129:android:87622e9ac90f089fdc88f0")
@@ -130,9 +130,9 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         });
 
         client = new OkHttpClient().newBuilder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(120, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(180, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
                 .build();
 
         // 퍼미션 체크
@@ -285,39 +285,6 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         messageList.remove(messageList.size()-1);
         addToChat(response, Message.SENT_BY_BOT);
     }
-    private static List<String> extractIngredients(String recipe) {
-        List<String> ingredients = new ArrayList<>();
-        Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
-
-        int startIdx = recipe.indexOf("재료:");
-        int endIdx = recipe.indexOf("만드는 방법:");
-        if (startIdx == -1 || endIdx == -1 || startIdx >= endIdx) {
-            return ingredients; // 재료 또는 조리 절차 텍스트가 없는 경우 빈 목록 반환
-        }
-        String ingredientText = recipe.substring(startIdx + 4, endIdx); // "재료:" 다음 문자부터 추출
-
-        Matcher matcher1 = pattern.matcher(ingredientText);
-        while (matcher1.find()) {
-            String ingredient = matcher1.group(1) + ": " + matcher1.group(2);
-            ingredients.add(ingredient);
-        }
-        return ingredients;
-    }
-
-    private static String extractCookingProcedure(String recipe) {
-        Pattern pattern2 = Pattern.compile("만드는 방법:\\s+([\\s\\S]+)");
-        Matcher matcher2 = pattern2.matcher(recipe);
-
-        if (matcher2.find()) {
-            return matcher2.group(1).trim();
-        }
-
-        return ""; // If cooking procedure not found
-    }
-
-
-
-
     void callAPI(String question) {
         //okhttp
         messageList.add(new Message("...", Message.SENT_BY_BOT));
@@ -329,7 +296,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
         try {
             //AI 속성설정
             baseAi.put("role", "user");
-            baseAi.put("content", "You are a helpful and kind AI Assistant.");
+            baseAi.put("content", "요리 관련 정보를 요구할 때 항상 \"재료:\"와 \"만드는 방법:\"이 들어가게 답변해줘");
             //유저 메세지
             userMsg.put("role", "user");
             userMsg.put("content", question);
@@ -375,9 +342,27 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                     try {
                         jsonObject = new JSONObject(response.body().string());
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
-                        //아래 result 받아오는 경로가 좀 수정되었다.
-                        String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
-                        addResponse(result.trim());
+                        if (jsonArray.length() > 0) {
+                            String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
+
+                            List<String> ingredients = extractIngredients(result);
+                            addResponse(result.trim());
+                            // Add ingredients to chat
+                            for (String ingredient : ingredients) {
+                                addResponse(ingredient);
+                            }
+
+                            if (!ingredients.isEmpty()) {
+                                Log.d(TAG, ingredients.get(0));
+                                String cookingProcedure = extractCookingProcedure(result);
+                                Log.d(TAG, cookingProcedure);
+                            } else {
+                                addResponse("No ingredients found in the recipe.");
+                            }
+
+                        } else {
+                            addResponse("No recipe choices found.");
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -387,25 +372,50 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
             }
         });
     }
-    public void moveActivity(String resultStr) {
-        if(resultStr.indexOf("재료") > -1) {
-            String guideStr = "액티비티를 넘어갑니다.";
-            Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
-            funcVoiceOut(guideStr);
+    private static List<String> extractIngredients(String recipe) {
+        List<String> ingredients = new ArrayList<>();
+        Pattern pattern = Pattern.compile("([가-힣]+): ([0-9/가-힣 ]+)");
 
-            //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
-            //startActivity(intent);
+        int startIdx = recipe.indexOf("재료:");
+        int endIdx = recipe.indexOf("만드는 방법:");
+        if (startIdx == -1 || endIdx == -1 || startIdx >= endIdx) {
+            return ingredients; // 재료 또는 조리 절차 텍스트가 없는 경우 빈 목록 반환
         }
+        String ingredientText = recipe.substring(startIdx + 4, endIdx); // "재료:" 다음 문자부터 추출
+
+        Matcher matcher1 = pattern.matcher(ingredientText);
+        while (matcher1.find()) {
+            String ingredient = matcher1.group(1) + ": " + matcher1.group(2);
+            ingredients.add(ingredient);
+        }
+        return ingredients;
+    }
+
+    private static String extractCookingProcedure(String recipe) {
+        Pattern pattern2 = Pattern.compile("만드는 방법:\\s+([\\s\\S]+)");
+        Matcher matcher2 = pattern2.matcher(recipe);
+
+        if (matcher2.find()) {
+            return matcher2.group(1).trim();
+        }
+
+        return ""; // If cooking procedure not found
+    }
+
+    public void moveActivity(String resultStr) {
+
         if(resultStr.indexOf("레시피") > -1) {
             String guideStr = "액티비티를 넘어갑니다.";
             Toast.makeText(getApplicationContext(), guideStr, Toast.LENGTH_SHORT).show();
             funcVoiceOut(guideStr);
 
-            List<String> ingredients = extractIngredients(resultStr);
-            String cookingProcedure = extractCookingProcedure(resultStr);
+            //List<String> ingredients = extractIngredients(resultStr);
+            //String cookingProcedure = extractCookingProcedure(resultStr);
+            //addToChat("재료를 장바구니에 넣으려면 장바구니, 레시피 저장을 하시려면 레시피저장이라고 말씀해주세요", Message.SENT_BY_BOT);
             //재료, 만드는 방법 잘 받아와지는지 확인
-            Log.d(TAG, ingredients.get(1));
-            Log.d(TAG, cookingProcedure);
+            //Log.d(TAG, ingredients.size());
+
+
 
             //Intent intent = new Intent(getApplicationContext(), NextActivity.class);
             //startActivity(intent);
