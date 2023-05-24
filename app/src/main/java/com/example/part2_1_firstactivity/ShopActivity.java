@@ -5,8 +5,14 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.util.Log;
 import android.util.SparseBooleanArray;
+=======
+
+import android.util.SparseBooleanArray;
+import android.util.Log;
+>>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -48,7 +54,10 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
         Intent intent2 = getIntent();
 
         adapter = new CustomChoiceListViewAdapter() ;
@@ -75,7 +84,10 @@ public class ShopActivity extends AppCompatActivity {
         }
 
         db= FirebaseFirestore.getInstance();    // shop
+<<<<<<< HEAD
 
+=======
+>>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
 
         Button moveButton = findViewById(R.id.backBtn);
         moveButton.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +101,11 @@ public class ShopActivity extends AppCompatActivity {
                 startActivity(intent);
 
 //                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
+<<<<<<< HEAD
                 ///startActivity(intent);
+=======
+                //startActivity(intent);
+>>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
 
             }
         });
@@ -101,9 +117,12 @@ public class ShopActivity extends AppCompatActivity {
     }
     private void addEventListener() {
         backBtn.setOnClickListener(view -> {
+<<<<<<< HEAD
 
             Intent intent = new Intent(this, OrderActivity.class);
 
+=======
+>>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
             String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
             int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
@@ -171,8 +190,12 @@ public class ShopActivity extends AppCompatActivity {
                 });
             }
 
+<<<<<<< HEAD
 //            Intent intent = new Intent(this, MainActivity4.class);
 
+=======
+            Intent intent = new Intent(this, MainActivity4.class);
+>>>>>>> 08eab66b55ea4f7fa0310825552735e8c14ca97f
             startActivity(intent);
         });
 
