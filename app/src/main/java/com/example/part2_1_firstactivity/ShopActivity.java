@@ -24,13 +24,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,8 +100,33 @@ public class ShopActivity extends AppCompatActivity {
                             for (int i = 0; i < list.size(); i++){
                                 Map tmp = (Map) list.get(i);
                                 Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
-                                // addToChat(question, Message.SENT_BY_BOT);
+
+                                // add to cart (일단 주석처리하께요오)
+                                /*Map<String, Object> cart = new HashMap<>();
+                                cart.put("userId", jId);
+                                cart.put("datetime", FieldValue.serverTimestamp());
+                                cart.put("productId", tmp.get("key"));
+                                cart.put("productName", tmp.get("name"));
+                                cart.put("productPrice", tmp.get("price"));
+                                cart.put("productSize", tmp.get("size"));
+                                cart.put("productType", tmp.get("type"));
+
+                                db.collection("cart")
+                                        .add(cart)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error adding document", e);
+                                            }
+                                        });*/
                             }
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
