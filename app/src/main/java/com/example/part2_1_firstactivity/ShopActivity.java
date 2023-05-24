@@ -5,11 +5,9 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
+
 import android.util.SparseBooleanArray;
-=======
 import android.util.Log;
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -58,7 +56,6 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
 
-<<<<<<< HEAD
         Intent intent2 = getIntent();
 
         adapter = new CustomChoiceListViewAdapter() ;
@@ -83,9 +80,7 @@ public class ShopActivity extends AppCompatActivity {
             }
         }
 
-=======
         db= FirebaseFirestore.getInstance();    // shop
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
 
         Button moveButton = findViewById(R.id.backBtn);
         moveButton.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +93,7 @@ public class ShopActivity extends AppCompatActivity {
                 startActivity(intent);
 
 //                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
-                    //startActivity(intent);
+                //startActivity(intent);
 
             }
         });
@@ -110,9 +105,6 @@ public class ShopActivity extends AppCompatActivity {
     }
     private void addEventListener() {
         backBtn.setOnClickListener(view -> {
-<<<<<<< HEAD
-            Intent intent = new Intent(this, OrderActivity.class);
-=======
             String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
             int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
@@ -181,7 +173,6 @@ public class ShopActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(this, MainActivity4.class);
->>>>>>> 114ab8896e3be01e2f03e00a7669efb4f3b397fb
             startActivity(intent);
         });
 
