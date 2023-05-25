@@ -80,19 +80,31 @@ public class OrderActivity extends AppCompatActivity {
 //        customlistAdapter = new CustomListAdapter(list);
 //        recyclerView.setAdapter(customlistAdapter);
 
+        Intent intent2 = getIntent();
+
         adapter = new CustomChoiceListViewAdapter() ;
         listview = (ListView) findViewById(R.id.listview1);
         listview.setAdapter(adapter);
-        adapter.addItem((ArrayList<ListViewItem>) list);
+//        adapter.addItem((ArrayList<ListViewItem>) list);
+        ArrayList<String> ReceiveItems = intent2.getStringArrayListExtra("SelectedItems");
+        ArrayList<ListViewItem> itemList = new ArrayList<>();
+
+        for (String recieveitem : ReceiveItems) {
+            ListViewItem item = new ListViewItem();
+            item.setText(recieveitem);
+            itemList.add(item);
+        }
+
+        adapter.addItem(itemList);
 
         Button moveButton = findViewById(R.id.payBtn);
         moveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                Intent intent=new Intent (getApplicationContext(), OrderActivity.class);
-//                startActivity(intent);
-
+//
+//                Intent intent2 = new Intent(getApplicationContext(), ShopActivity.class);
+//                intent2.putStringArrayListExtra("ArrayList", (ArrayList<String>) list);
+//                startActivity(intent2);
 
             }
         });

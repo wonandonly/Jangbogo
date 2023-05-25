@@ -1,5 +1,18 @@
 package com.example.part2_1_firstactivity;
 
+import android.Manifest;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -7,22 +20,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.speech.tts.TextToSpeech;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.content.ContentValues;
-import android.net.Uri;
+import com.google.firebase.firestore.FieldValue;
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class CameraActivity extends AppCompatActivity{
     Bitmap bitmap;
@@ -42,7 +43,11 @@ public class CameraActivity extends AppCompatActivity{
         imageView = findViewById(R.id.CameraimageView);
 
         // 권한 요청
-        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            captureAndSaveImage();
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     // 사진 찍고 가져오기
@@ -91,7 +96,7 @@ public class CameraActivity extends AppCompatActivity{
     }
 
     private void saveImageToGallery(Bitmap bitmap) {
-        String displayName = "Image.jpg";
+        String displayName = FieldValue.serverTimestamp()+ "Image.jpg";
         String mimeType = "image/jpeg";
 
         ContentValues values = new ContentValues();
@@ -124,5 +129,6 @@ public class CameraActivity extends AppCompatActivity{
                     Toast.makeText(this, "외부 저장소에 접근할 수 없어 사진을 저장할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
+
     );
 }

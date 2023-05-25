@@ -93,18 +93,18 @@ public class ShopActivity extends AppCompatActivity {
                 ArrayList<String> selectedStrings = new ArrayList<>();
                 for (ListViewItem item : selectedItems) {
                     selectedStrings.add(item.getText());
-                    Log.d(TAG, "Selected item: " + item);
+                    Log.d(TAG, "Selected item: " + item.getText());
                 }
 
                 //OrderActivity로 넘어감
                 Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
                 intent.putStringArrayListExtra("SelectedItems", selectedStrings);
-                ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
                 startActivity(intent);
+                ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
+                //startActivity(intent);
 
 //                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
                 //startActivity(intent);
-
             }
         });
     }
@@ -185,6 +185,9 @@ public class ShopActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, MainActivity4.class);
             startActivity(intent);
+//            Intent intent2 = new Intent(getApplicationContext(), ShopActivity.class);
+//            intent2.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
+//            startActivity(intent2);
         });
 
     }
