@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +34,11 @@ public class ShopActivity extends AppCompatActivity {
 
     private Button backBtn;
     private FirebaseFirestore db;
+    private ArrayList<String> selectedStrings;
 
     ListView listview;
     ArrayList<String> ReceiveArr;
+    ArrayList<String> getStrings;
     CustomChoiceListViewAdapter adapter;
 
     // Adapter 생성
@@ -90,7 +94,7 @@ public class ShopActivity extends AppCompatActivity {
 
                     }
                 }
-                ArrayList<String> selectedStrings = new ArrayList<>();
+                selectedStrings = new ArrayList<>();
                 for (ListViewItem item : selectedItems) {
                     selectedStrings.add(item.getText());
                     Log.d(TAG, "Selected item: " + item.getText());
@@ -98,7 +102,7 @@ public class ShopActivity extends AppCompatActivity {
 
                 //OrderActivity로 넘어감
                 Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                intent.putStringArrayListExtra("SelectedItems", selectedStrings);
+                intent.putStringArrayListExtra("SelectedItems", getStrings);
                 startActivity(intent);
                 ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
                 //startActivity(intent);
@@ -121,74 +125,69 @@ public class ShopActivity extends AppCompatActivity {
             int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
             if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
                 // 상품 검색
-                Task<QuerySnapshot> task = db.collection("product").where(Filter.or(
-                        Filter.equalTo("search", "미역 30g"),
-                        Filter.equalTo("search", "돼지고기 혹은 소고기 100g"),
-                        Filter.equalTo("search", "다시마 5x5cm 크기 한 조각"),
-                        Filter.equalTo("search", "김치국물 1/2컵"),
-                        Filter.equalTo("search", "된장 1큰술"),
-                        Filter.equalTo("search", "다진마늘 1작은술"),
-                        Filter.equalTo("search", "소금 약간"),
-                        Filter.equalTo("search", "후추 약간"),
-                        Filter.equalTo("search", "참기름 1작은술"),
-                        Filter.equalTo("search", "녹말물 2큰술 (녹말 1큰술 + 물 2큰술)"),
-                        Filter.equalTo("search", ""),
-                        Filter.equalTo("search", "")
-                )).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        List list = new ArrayList();
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map map = document.getData();
-                                map.put("key", document.getId());
-                                list.add(map);
-                                //Log.d(TAG, list.size() + "list map : " + map.get("name"));
-                            }
-                            //Log.d(TAG, "list size : " + list.size());
-                            for (int i = 0; i < list.size(); i++) {
-                                Map tmp = (Map) list.get(i);
-                                Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
+                List<Filter> filters = new ArrayList<>();
+                for (String selectedString : selectedStrings) {
+                    filters.add(Filter.equalTo("search", selectedString));
+                }
 
-                                // add to cart (일단 주석처리하께요오)
-                                /*Map<String, Object> cart = new HashMap<>();
-                                cart.put("userId", jId);
-                                cart.put("datetime", FieldValue.serverTimestamp());
-                                cart.put("productId", tmp.get("key"));
-                                cart.put("productName", tmp.get("name"));
-                                cart.put("productPrice", tmp.get("price"));
-                                cart.put("productSize", tmp.get("size"));
-                                cart.put("productType", tmp.get("type"));
+                if (!filters.isEmpty()) {
+                    Task<QuerySnapshot> task = db.collection("product")
+                            .where(Filter.or(filters.toArray(new Filter[0])))
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    getStrings = new ArrayList<>();
+                                    List list = new ArrayList();
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Map map = document.getData();
+                                            map.put("key", document.getId());
+                                            list.add(map);
+                                            //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                        }
+                                        //Log.d(TAG, "list size : " + list.size());
+                                        for (int i = 0; i < list.size(); i++) {
+                                            Map tmp = (Map) list.get(i);
+                                            Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
+                                            getStrings.add("list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
 
-                                db.collection("cart")
-                                        .add(cart)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error adding document", e);
-                                            }
-                                        });*/
-                            }
+                                            // add to cart (일단 주석처리하께요오)
+                                        /*Map<String, Object> cart = new HashMap<>();
+                                        cart.put("userId", jId);
+                                        cart.put("datetime", FieldValue.serverTimestamp());
+                                        cart.put("productId", tmp.get("key"));
+                                        cart.put("productName", tmp.get("name"));
+                                        cart.put("productPrice", tmp.get("price"));
+                                        cart.put("productSize", tmp.get("size"));
+                                        cart.put("productType", tmp.get("type"));
 
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+                                        db.collection("cart")
+                                                .add(cart)
+                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
+                                                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error adding document", e);
+                                                    }
+                                                });*/
+                                        }
+
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                }
+
+                Intent intent = new Intent(this, MainActivity4.class);
+                startActivity(intent);
             }
-
-            Intent intent = new Intent(this, MainActivity4.class);
-            startActivity(intent);
-//            Intent intent2 = new Intent(getApplicationContext(), ShopActivity.class);
-//            intent2.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
-//            startActivity(intent2);
         });
-
     }
+
 }

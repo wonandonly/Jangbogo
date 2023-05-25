@@ -96,7 +96,7 @@ public class CameraActivity extends AppCompatActivity{
     }
 
     private void saveImageToGallery(Bitmap bitmap) {
-        String displayName = FieldValue.serverTimestamp()+ "Image.jpg";
+        String displayName = "Image.jpg";
         String mimeType = "image/jpeg";
 
         ContentValues values = new ContentValues();
