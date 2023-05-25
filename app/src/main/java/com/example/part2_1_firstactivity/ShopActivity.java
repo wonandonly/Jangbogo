@@ -32,14 +32,18 @@ import adapter.CustomChoiceListViewAdapter;
 
 public class ShopActivity extends AppCompatActivity {
 
+    public static ArrayList<String> getStrings;
+    public static ArrayList<String> selectedStrings;
+
     private Button backBtn;
     private FirebaseFirestore db;
-    private ArrayList<String> selectedStrings;
+
 
     ListView listview;
     ArrayList<String> ReceiveArr;
-    ArrayList<String> getStrings;
     CustomChoiceListViewAdapter adapter;
+
+
 
     // Adapter 생성
 
@@ -99,59 +103,39 @@ public class ShopActivity extends AppCompatActivity {
                     selectedStrings.add(item.getText());
                     Log.d(TAG, "Selected item: " + item.getText());
                 }
+                String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
-                //OrderActivity로 넘어감
-                Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
-                intent.putStringArrayListExtra("SelectedItems", getStrings);
-                startActivity(intent);
-                ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
-                //startActivity(intent);
+                int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
+                if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                    // 상품 검색
+                    List<Filter> filters = new ArrayList<>();
+                    for (String selectedString : selectedStrings) {
+                        filters.add(Filter.equalTo("search", selectedString));
+                    }
 
-//                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
-                //startActivity(intent);
-            }
-        });
-    }
+                    if (!filters.isEmpty()) {
+                        Task<QuerySnapshot> task = db.collection("product")
+                                .where(Filter.or(filters.toArray(new Filter[0])))
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-    private void initData() {
-        backBtn = findViewById(R.id.backBtn);
+                                        getStrings = new ArrayList<String>();
+                                        List list = new ArrayList();
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                Map map = document.getData();
+                                                map.put("key", document.getId());
+                                                list.add(map);
+                                                //Log.d(TAG, list.size() + "list map : " + map.get("name"));
+                                            }
+                                            //Log.d(TAG, "list size : " + list.size());
+                                            for (int i = 0; i < list.size(); i++) {
+                                                Map tmp = (Map) list.get(i);
+                                                Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
+                                                getStrings.add(tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
 
-    }
-
-    private void addEventListener() {
-        backBtn.setOnClickListener(view -> {
-            String jId = "t9S9FGgV7ygPMNAtX8Oj";
-
-            int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
-            if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
-                // 상품 검색
-                List<Filter> filters = new ArrayList<>();
-                for (String selectedString : selectedStrings) {
-                    filters.add(Filter.equalTo("search", selectedString));
-                }
-
-                if (!filters.isEmpty()) {
-                    Task<QuerySnapshot> task = db.collection("product")
-                            .where(Filter.or(filters.toArray(new Filter[0])))
-                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    getStrings = new ArrayList<>();
-                                    List list = new ArrayList();
-                                    if (task.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Map map = document.getData();
-                                            map.put("key", document.getId());
-                                            list.add(map);
-                                            //Log.d(TAG, list.size() + "list map : " + map.get("name"));
-                                        }
-                                        //Log.d(TAG, "list size : " + list.size());
-                                        for (int i = 0; i < list.size(); i++) {
-                                            Map tmp = (Map) list.get(i);
-                                            Log.d(TAG, "list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
-                                            getStrings.add("list ->" + tmp.get("search") + " : " + tmp.get("name") + ", " + tmp.get("size") + ", " + tmp.get("price") + "원");
-
-                                            // add to cart (일단 주석처리하께요오)
+                                                // add to cart (일단 주석처리하께요오)
                                         /*Map<String, Object> cart = new HashMap<>();
                                         cart.put("userId", jId);
                                         cart.put("datetime", FieldValue.serverTimestamp());
@@ -175,17 +159,28 @@ public class ShopActivity extends AppCompatActivity {
                                                         Log.w(TAG, "Error adding document", e);
                                                     }
                                                 });*/
-                                        }
+                                            }
 
-                                    } else {
-                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                        Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+                                        intent.putStringArrayListExtra("SelectedItems", getStrings);
+                                        startActivity(intent);
                                     }
-                                }
-                            });
+                                });
+                    }
+
+
                 }
 
-                Intent intent = new Intent(this, MainActivity4.class);
-                startActivity(intent);
+                //OrderActivity로 넘어감
+
+                ////intent.putStringArrayListExtra("ArrayList", (ArrayList<String>) ingredients);
+                //startActivity(intent);
+
+//                Intent intent = new Intent(ShopActivity.this, OrderActivity.class);
+                //startActivity(intent);
             }
         });
     }
