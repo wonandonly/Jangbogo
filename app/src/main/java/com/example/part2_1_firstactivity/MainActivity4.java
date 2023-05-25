@@ -101,7 +101,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
     String jId = "t9S9FGgV7ygPMNAtX8Oj";
 
 
-    private static final String MY_SECRET_KEY = "sk-*";
+    private static final String MY_SECRET_KEY = "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";
 
 
 
@@ -372,7 +372,7 @@ public class MainActivity4 extends AppCompatActivity implements TextToSpeech.OnI
                                     //Log.d(TAG, list.size() + "list map : " + map.get("name"));
                                 }
                                 Log.d(TAG, "list size : " + list.size());
-                                if(list.isEmpty()){
+                                if(list.isEmpty()&&resultStr2.indexOf("카메라") <= -1){
                                     addToChat("해당 레시피가 저장되지 않았습니다.", Message.SENT_BY_BOT);
                                 }else {
                                     for (int i = 0; i < list.size(); i++) {
